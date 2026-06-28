@@ -1,0 +1,130 @@
+:root {
+  /* Enactus IGDTUW — Light editorial palette */
+  --background: #F8F8F6;
+  --background-secondary: #EFEFE9;
+  --background-cream: #FBF7EC;
+  --foreground: #2F3B4D;
+  --foreground-secondary: #5C6673;
+
+  --enactus-yellow: #FFC72C;
+  --gold-accent: #D39A0D;
+  --navy-accent: #2F3B4D;
+  --navy-deep: #242E3C;
+  --border-color: #E3E1DA;
+
+  /* Mapped tokens for shadcn/ui components */
+  --card: #ffffff;
+  --card-foreground: #2F3B4D;
+  --popover: #ffffff;
+  --popover-foreground: #2F3B4D;
+  --primary: #FFC72C;
+  --primary-foreground: #2F3B4D;
+  --secondary: #EFEFE9;
+  --secondary-foreground: #2F3B4D;
+  --muted: #EFEFE9;
+  --muted-foreground: #5C6673;
+  --accent: #FFC72C;
+  --accent-foreground: #2F3B4D;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: #E3E1DA;
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --ring: #FFC72C;
+
+  /* Typography */
+  --font-display: 'Anton', 'Archivo', sans-serif;
+  --font-heading: 'Archivo', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-size: 16px;
+
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-cream: var(--background-cream);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-enactus-yellow: var(--enactus-yellow);
+  --color-gold-accent: var(--gold-accent);
+  --color-navy-accent: var(--navy-accent);
+  --color-navy-deep: var(--navy-deep);
+  --color-border-color: var(--border-color);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+
+  --font-display: var(--font-display);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: var(--font-size);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* Two-tone heavy display heading, Enactus-Global style */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  /* Small uppercase eyebrow label with a yellow tick */
+  .eyebrow {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-accent);
+  }
+}
