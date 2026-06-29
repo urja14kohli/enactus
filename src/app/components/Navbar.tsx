@@ -7,8 +7,8 @@ const mainLinks = [
   { name: 'About', path: '/about' },
   { name: 'Ventures', path: '/ventures' },
   { name: 'Impact', path: '/impact' },
+  { name: 'Events', path: '/events' },
   { name: 'Team', path: '/team' },
-  { name: 'Research', path: '/research' },
   { name: 'Gallery', path: '/gallery' },
 ];
 
@@ -31,7 +31,7 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           solid
-            ? 'bg-navy-deep/95 backdrop-blur-md shadow-lg'
+            ? 'bg-navy-deep/65 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.5)]'
             : 'bg-gradient-to-b from-black/40 to-transparent'
         }`}
       >
@@ -91,7 +91,7 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 260 }}
-            className="fixed inset-0 z-40 lg:hidden bg-navy-deep pt-24"
+            className="fixed inset-0 z-40 lg:hidden surface-dark pt-24"
           >
             <div className="h-full overflow-y-auto px-6 py-6">
               <div className="space-y-1">

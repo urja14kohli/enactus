@@ -1,76 +1,77 @@
 import { motion } from 'motion/react';
-import { Users, Leaf, IndianRupee, Quote, Award } from 'lucide-react';
+import { Users, Leaf, IndianRupee, Quote } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import DisplayHeading from '../components/DisplayHeading';
 import AnimatedCounter from '../components/AnimatedCounter';
-import Wedge from '../components/Wedge';
-import { orgStats, achievements } from '../data/content';
+import PhotoMarquee from '../components/PhotoMarquee';
+import { orgStats, achievements, photoPool } from '../data/content';
 
 const pillars = [
   {
-    icon: <Users className="w-7 h-7" />,
+    icon: <Users className="h-7 w-7" />,
     title: 'Social Impact',
     points: [
-      '850+ beneficiaries directly impacted',
-      'Outreach across schools, old-age homes & children\u2019s homes',
-      'Mental health interventions through Project Sahaay',
-      '\u20B91,500+ worth of essentials donated',
+      '850+ people directly impacted',
+      'Outreach in schools, old-age homes and children\u2019s homes',
+      'Mental health support through Project Sahaay',
+      'Everyday essentials donated to those who need them',
     ],
   },
   {
-    icon: <IndianRupee className="w-7 h-7" />,
+    icon: <IndianRupee className="h-7 w-7" />,
     title: 'Economic Impact',
     points: [
-      '\u20B932,607+ recorded revenue across projects',
-      'Project Sahaay: 51% profit margin',
-      'Project Dhaan: 1,000-mug institutional order',
-      '10+ individuals employed through production',
+      'Money our projects earn goes back into the community',
+      'Project Dhaan landed its first 1,000-mug order',
+      '10+ people earning through our production work',
+      'Several projects already running at a profit',
     ],
   },
   {
-    icon: <Leaf className="w-7 h-7" />,
+    icon: <Leaf className="h-7 w-7" />,
     title: 'Environmental Impact',
     points: [
-      '200 kg+ agri-waste upcycled via Khajoor',
-      'Rice husk waste repurposed via Dhaan',
-      '100+ Li-ion batteries refurbished via Vidyuta',
-      'Circular economy practices promoted',
+      '200 kg+ agri-waste given a second life through Khajoor',
+      'Rice husk waste turned into reusable products by Dhaan',
+      '100+ lithium-ion batteries refurbished by Vidyuta',
+      'Circular, zero-waste thinking across the board',
     ],
   },
 ];
 
 export default function Impact() {
   return (
-    <div>
+    <main>
       <PageHero
-        eyebrow="Our Impact · 2025–26"
-        lead="Measurable"
-        accent="Change"
-        subtitle="Every initiative is measured by the lives it improves and the systems it makes more sustainable."
+        eyebrow="Our Impact, 2025 / 26"
+        lead="Change you"
+        accent="can measure"
+        subtitle="We judge every project by one thing: did it actually make life better for someone? Here is what that looked like this year."
+        images={[photoPool[2], photoPool[18], photoPool[3], photoPool[14], photoPool[19]]}
       />
 
       {/* Numbers */}
-      <section className="bg-navy-accent text-white py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-12 gap-x-6">
+      <section className="px-4 py-16 md:py-20">
+        <div className="surface-dark mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-12 overflow-hidden rounded-[2rem] px-6 py-14 text-white md:grid-cols-3 lg:grid-cols-5">
           {orgStats.map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="display text-4xl md:text-5xl text-enactus-yellow mb-2">
-                <AnimatedCounter end={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+              <div className="display mb-2 text-4xl text-enactus-yellow md:text-5xl">
+                <AnimatedCounter end={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="text-xs md:text-sm uppercase tracking-wider text-white/70">{stat.label}</div>
+              <div className="text-xs uppercase tracking-wider text-white/70 md:text-sm">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Pillars */}
-      <section className="bg-background py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-14">
-            <div className="eyebrow mb-3">How We Create Value</div>
-            <DisplayHeading lead="Three Dimensions" accent="Of Impact" size="md" />
+      <section className="pb-16 md:pb-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-14 max-w-2xl">
+            <div className="eyebrow mb-3">How we create value</div>
+            <DisplayHeading lead="Three kinds" accent="of impact" size="md" />
           </div>
-          <div className="grid md:grid-cols-3 gap-7">
+          <div className="grid gap-7 md:grid-cols-3">
             {pillars.map((p, i) => (
               <motion.div
                 key={p.title}
@@ -78,16 +79,16 @@ export default function Impact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white border border-border-color rounded-2xl p-8"
+                className="glass hover-lift rounded-3xl p-8"
               >
-                <div className="w-12 h-12 rounded-xl bg-enactus-yellow/15 text-gold-accent flex items-center justify-center mb-5">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-enactus-yellow/20 text-gold-accent">
                   {p.icon}
                 </div>
-                <h3 className="font-heading font-extrabold text-xl text-navy-accent mb-4">{p.title}</h3>
+                <h3 className="mb-4 font-heading text-xl font-extrabold text-navy-accent">{p.title}</h3>
                 <ul className="space-y-3">
                   {p.points.map((pt) => (
                     <li key={pt} className="flex items-start gap-2 text-sm text-foreground-secondary">
-                      <span className="w-1.5 h-1.5 rounded-full bg-enactus-yellow shrink-0 mt-2" />
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-enactus-yellow" />
                       <span>{pt}</span>
                     </li>
                   ))}
@@ -98,16 +99,19 @@ export default function Impact() {
         </div>
       </section>
 
-      <Wedge color="secondary" direction="down-left" />
+      {/* Photo collage */}
+      <section className="pb-16 md:pb-24">
+        <PhotoMarquee images={photoPool.slice(0, 12)} />
+      </section>
 
-      {/* Achievements timeline */}
-      <section className="bg-background-secondary py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-14">
+      {/* Achievements */}
+      <section className="pb-20 md:pb-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-14 max-w-2xl">
             <div className="eyebrow mb-3">Recognition</div>
-            <DisplayHeading lead="A Track Record" accent="Of Excellence" size="md" />
+            <DisplayHeading lead="A few wins" accent="along the way" size="md" />
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {achievements.map((a, i) => (
               <motion.div
                 key={a.title}
@@ -115,16 +119,11 @@ export default function Impact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                className="bg-white border border-border-color rounded-2xl p-6 flex gap-4"
+                className="glass rounded-2xl p-6"
               >
-                <div className="shrink-0 w-12 h-12 rounded-lg bg-navy-accent text-enactus-yellow flex items-center justify-center">
-                  <Award className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="display text-lg text-gold-accent leading-none mb-1">{a.year}</div>
-                  <h3 className="font-heading font-bold text-navy-accent leading-snug mb-1">{a.title}</h3>
-                  <p className="text-sm text-foreground-secondary leading-relaxed">{a.detail}</p>
-                </div>
+                <div className="display mb-1 text-lg leading-none text-gold-accent">{a.year}</div>
+                <h3 className="mb-1 font-heading font-bold leading-snug text-navy-accent">{a.title}</h3>
+                <p className="text-sm leading-relaxed text-foreground-secondary">{a.detail}</p>
               </motion.div>
             ))}
           </div>
@@ -132,17 +131,17 @@ export default function Impact() {
       </section>
 
       {/* Testimonial */}
-      <section className="bg-navy-deep text-white py-20 md:py-24">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <Quote className="w-12 h-12 text-enactus-yellow mx-auto mb-6" />
-          <p className="font-heading font-semibold text-2xl md:text-3xl leading-snug mb-8">
-            “The projects undertaken by Enactus IGDTUW uplift communities and improve their livelihoods while honing
-            students into socially aware and responsible entrepreneurs.”
+      <section className="px-4 pb-24">
+        <div className="surface-dark mx-auto max-w-4xl overflow-hidden rounded-[2rem] px-6 py-16 text-center text-white md:py-20">
+          <Quote className="mx-auto mb-6 h-12 w-12 text-enactus-yellow" />
+          <p className="mx-auto max-w-3xl font-heading text-2xl font-semibold leading-snug md:text-3xl">
+            "The projects by Enactus IGDTUW lift up communities and improve livelihoods, while shaping students into
+            aware and responsible entrepreneurs."
           </p>
-          <div className="text-enactus-yellow font-bold uppercase tracking-wider text-sm">Prof. Nidhi Goel</div>
-          <div className="text-white/60 text-sm">Faculty Advisor, Enactus IGDTUW</div>
+          <div className="mt-8 text-sm font-bold uppercase tracking-wider text-enactus-yellow">Prof. Nidhi Goel</div>
+          <div className="text-sm text-white/60">Faculty Advisor, Enactus IGDTUW</div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

@@ -50,9 +50,9 @@ function getRolePriority(role: string): number {
 
 // ─── Fixed layout: 3 rows, all members visible, no scroll ────────────────────
 //
-// Row 0 (h=38%): up to 4 senior members — wider tiles
-// Row 1 (h=33%): next batch — medium tiles
-// Row 2 (h=29%): remaining — smaller tiles
+// Row 0 (h=38%): up to 4 senior members, wider tiles
+// Row 1 (h=33%): next batch, medium tiles
+// Row 2 (h=29%): remaining, smaller tiles
 //
 // widths are distributed evenly within each row
 
@@ -182,12 +182,12 @@ export default function Team() {
     <div>
       <PageHero
         eyebrow="Our Team"
-        lead="The People Behind"
-        accent="The Impact"
-        subtitle="Meet the passionate student leaders driving change at Enactus IGDTUW."
+        lead="The people behind"
+        accent="the impact"
+        subtitle="The student leaders who show up, put in the hours, and make all of this happen."
       />
 
-      <section className="py-20 bg-background">
+      <section className="py-20">
         <div className="max-w-screen-xl mx-auto px-6">
           <div className="flex gap-12 items-stretch">
 
@@ -348,17 +348,17 @@ export default function Team() {
       </section>
 
       {/* Departments */}
-      <section className="py-20 md:py-24 bg-background-secondary">
+      <section className="py-20 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-2xl mb-12">
-            <div className="eyebrow mb-3">How We're Organised</div>
-            <DisplayHeading lead="Our" accent="Departments" size="md" />
+            <div className="eyebrow mb-3">How we are organised</div>
+            <DisplayHeading lead="Our" accent="teams" size="md" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {departments.map((d) => (
               <div
                 key={d}
-                className="bg-white border border-border-color rounded-xl px-5 py-6 text-center font-heading font-bold text-navy-accent hover:border-enactus-yellow transition-colors"
+                className="glass hover-lift rounded-2xl px-5 py-6 text-center font-heading font-bold text-navy-accent"
               >
                 {d}
               </div>
@@ -368,17 +368,17 @@ export default function Team() {
       </section>
 
       {/* Join CTA */}
-      <section className="py-20 md:py-24 bg-navy-deep text-white">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <DisplayHeading lead="Join Our" accent="Team" size="lg" align="center" light />
+      <section className="px-4 pb-24">
+        <div className="surface-dark mx-auto max-w-4xl overflow-hidden rounded-[2rem] px-6 py-16 text-center text-white md:py-20">
+          <DisplayHeading lead="Want in?" accent="Join the team" size="lg" align="center" light />
           <p className="text-white/75 max-w-2xl mx-auto mt-5 mb-9">
-            We're always looking for passionate students who want to make a difference. Be part of our journey.
+            We are always looking for students who want to make a difference. There is a spot here for you.
           </p>
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-enactus-yellow text-navy-deep font-extrabold uppercase tracking-wide text-sm rounded-md hover:bg-white transition-colors"
+            className="inline-flex items-center gap-2 rounded-full bg-enactus-yellow px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-navy-deep transition-colors hover:bg-white"
           >
-            Apply Now <ArrowRight className="w-4 h-4" />
+            Apply now <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>

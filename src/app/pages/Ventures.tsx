@@ -1,120 +1,133 @@
-import { motion } from 'motion/react';
 import { Link } from 'react-router';
-import { ArrowRight, CheckCircle2, HeartPulse, ImageIcon } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ArrowUpRight } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import DisplayHeading from '../components/DisplayHeading';
-import VentureCard from '../components/VentureCard';
-import Wedge from '../components/Wedge';
-import { ventures, pastVentures } from '../data/content';
+import { allVentures, ventures, type Venture } from '../data/content';
 
-const accentBg: Record<string, string> = {
-  green: 'from-emerald-700 to-emerald-900',
-  navy: 'from-navy-accent to-navy-deep',
-  gold: 'from-amber-600 to-yellow-800',
-  rose: 'from-rose-700 to-rose-900',
+const accentMap: Record<Venture['accent'], { text: string; dot: string; chip: string; ring: string }> = {
+  green: { text: 'text-emerald-700', dot: 'bg-emerald-500', chip: 'bg-emerald-500/10 text-emerald-700', ring: 'ring-emerald-500/30' },
+  navy: { text: 'text-navy-accent', dot: 'bg-navy-accent', chip: 'bg-navy-accent/10 text-navy-accent', ring: 'ring-navy-accent/25' },
+  gold: { text: 'text-gold-accent', dot: 'bg-enactus-yellow', chip: 'bg-enactus-yellow/15 text-gold-accent', ring: 'ring-enactus-yellow/40' },
+  rose: { text: 'text-rose-700', dot: 'bg-rose-500', chip: 'bg-rose-500/10 text-rose-700', ring: 'ring-rose-500/30' },
 };
+
+const timeline = [...allVentures].sort((a, b) => Number(a.founded) - Number(b.founded));
+
+function TimelineCard({ v, index }: { v: Venture; index: number }) {
+  const a = accentMap[v.accent];
+  const left = index % 2 === 0;
+  return (
+    <div className="relative md:grid md:grid-cols-2 md:gap-12">
+      {/* node on the line */}
+      <div className="absolute left-4 top-7 z-10 -translate-x-1/2 md:left-1/2">
+        <span className={`block h-4 w-4 rounded-full ${a.dot} ring-4 ring-[var(--background)] shadow`} />
+      </div>
+
+      {/* spacer for the empty side on desktop */}
+      {!left && <div className="hidden md:block" />}
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.55 }}
+        className={`ml-12 md:ml-0 ${left ? 'md:pr-2' : 'md:col-start-2 md:pl-2'}`}
+      >
+        <Link
+          to={`/ventures/${v.slug}`}
+          className={`group glass hover-lift block overflow-hidden rounded-3xl ring-1 ${a.ring}`}
+        >
+          <div className="relative h-44 overflow-hidden sm:h-52">
+            {v.hero ? (
+              <img
+                src={v.hero}
+                alt={v.name}
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            ) : (
+              <div className="surface-dark flex h-full w-full items-center justify-center">
+                <span className="font-display text-5xl text-white/20">{v.name.split(' ').pop()}</span>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+            <span className="absolute left-4 top-4 rounded-full bg-white/85 px-3 py-1 font-display text-sm tracking-wide text-navy-accent backdrop-blur">
+              {v.founded}
+            </span>
+            {v.status === 'current' && (
+              <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/90 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" /> Active
+              </span>
+            )}
+            {v.logo && (
+              <div className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white/90 p-1.5 shadow backdrop-blur">
+                <img src={v.logo} alt="" className="h-full w-full object-contain" />
+              </div>
+            )}
+          </div>
+
+          <div className="p-6">
+            <div className="mb-3 flex items-center gap-2">
+              <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${a.chip}`}>{v.area}</span>
+            </div>
+            <h3 className="font-heading text-2xl font-extrabold text-navy-accent">{v.name}</h3>
+            <p className="mt-2 text-[15px] leading-relaxed text-foreground-secondary">{v.tagline}</p>
+            <span className={`mt-4 inline-flex items-center gap-1.5 text-sm font-bold ${a.text}`}>
+              View the project <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </span>
+          </div>
+        </Link>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function Ventures() {
   return (
-    <div>
+    <main>
       <PageHero
         eyebrow="Our Ventures"
-        lead="Ideas Creating"
-        accent="Change"
-        subtitle="Sustainable, student-led social enterprises addressing real challenges across our communities."
+        lead="Ideas that"
+        accent="grew up"
+        subtitle="Every project started as a student noticing a problem and deciding to do something about it. Here is how our ventures have grown over the years. Tap any one to see the full story."
+        images={ventures.map((v) => v.hero!).filter(Boolean)}
       />
 
-      {/* Current ventures — detailed alternating */}
-      <section className="bg-background py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-16">
-            <div className="eyebrow mb-3">Active · 2024–26</div>
-            <DisplayHeading lead="Current" accent="Ventures" size="md" />
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-14 text-center">
+            <p className="eyebrow mb-3">The timeline</p>
+            <DisplayHeading lead="From first idea" accent="to real impact" align="center" />
           </div>
 
-          <div className="space-y-20">
-            {ventures.map((v, i) => (
-              <motion.div
-                key={v.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className={`grid lg:grid-cols-2 gap-10 lg:gap-14 items-center ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}
-              >
-                <div className="relative">
-                  {v.image ? (
-                    <img src={v.image} alt={v.name} className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
-                  ) : (
-                    <div className={`relative rounded-2xl shadow-xl w-full aspect-[4/3] bg-gradient-to-br ${accentBg[v.accent]} flex flex-col items-center justify-center text-white/90`}>
-                      <HeartPulse className="w-16 h-16 mb-3" />
-                      <span className="font-heading font-extrabold text-2xl">{v.name}</span>
-                      <span className="mt-3 inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-white/60">
-                        <ImageIcon className="w-3.5 h-3.5" /> Photos coming soon
-                      </span>
-                    </div>
-                  )}
-                  {v.logo && (
-                    <div className="absolute -bottom-5 left-6 bg-white rounded-xl p-2 shadow-lg">
-                      <img src={v.logo} alt={`${v.name} logo`} className="h-14 w-14 object-contain" />
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <div className="eyebrow mb-2">{v.area}</div>
-                  <h3 className="font-heading font-extrabold text-3xl text-navy-accent mb-1">{v.name}</h3>
-                  {v.established && <div className="text-sm text-foreground-secondary mb-4">{v.established}</div>}
-                  <p className="text-foreground-secondary leading-relaxed mb-6">{v.description}</p>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {v.highlights.map((h) => (
-                      <div key={h} className="flex items-start gap-2 text-sm text-navy-accent">
-                        <CheckCircle2 className="w-4 h-4 text-gold-accent shrink-0 mt-0.5" />
-                        <span>{h}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="relative">
+            {/* center line */}
+            <div className="absolute left-4 top-0 h-full w-px bg-gradient-to-b from-transparent via-navy-accent/20 to-transparent md:left-1/2" />
+            <div className="space-y-12 md:space-y-16">
+              {timeline.map((v, i) => (
+                <TimelineCard key={v.slug} v={v} index={i} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <Wedge color="secondary" direction="down-right" />
-
-      {/* Past ventures */}
-      <section className="bg-background-secondary py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-14">
-            <div className="eyebrow mb-3">Our Legacy</div>
-            <DisplayHeading lead="Past" accent="Ventures" size="md" />
-            <p className="text-foreground-secondary mt-4 leading-relaxed">
-              The projects that shaped our journey and impacted thousands of lives since 2015.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
-            {pastVentures.map((v, i) => (
-              <VentureCard key={v.slug} venture={v} index={i} />
-            ))}
+      <section className="pb-24">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="glass relative overflow-hidden rounded-3xl px-8 py-12 text-center md:py-16">
+            <p className="eyebrow mb-3">Got an idea?</p>
+            <h2 className="mx-auto max-w-2xl font-heading text-3xl font-extrabold text-navy-accent md:text-4xl">
+              The next venture on this timeline could be yours.
+            </h2>
+            <Link
+              to="/contact"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-navy-accent px-7 py-3.5 text-sm font-extrabold uppercase tracking-wide text-white transition-colors hover:bg-navy-deep"
+            >
+              Start something with us <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* CTA */}
-      <section className="bg-enactus-yellow py-20 md:py-24">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <DisplayHeading lead="Have An Idea For A" accent="Venture?" size="lg" align="center" />
-          <p className="text-navy-deep/80 text-lg max-w-2xl mx-auto mt-5 mb-9">
-            We're always looking for innovative ideas and passionate changemakers to build the next big thing.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-navy-deep text-white font-extrabold uppercase tracking-wide text-sm rounded-md hover:bg-navy-accent transition-colors"
-          >
-            Propose A Venture <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }

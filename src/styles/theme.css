@@ -1,35 +1,35 @@
 :root {
-  /* Enactus IGDTUW — Light editorial palette */
-  --background: #F8F8F6;
-  --background-secondary: #EFEFE9;
-  --background-cream: #FBF7EC;
-  --foreground: #2F3B4D;
-  --foreground-secondary: #5C6673;
+  /* Enactus IGDTUW: one cohesive warm palette, used everywhere */
+  --background: #F4F1EA;
+  --background-secondary: #F4F1EA;
+  --background-cream: #F4F1EA;
+  --foreground: #232A36;
+  --foreground-secondary: #59616E;
 
   --enactus-yellow: #FFC72C;
-  --gold-accent: #D39A0D;
-  --navy-accent: #2F3B4D;
-  --navy-deep: #242E3C;
-  --border-color: #E3E1DA;
+  --gold-accent: #B07D0A;
+  --navy-accent: #28303D;
+  --navy-deep: #1B222D;
+  --border-color: rgba(35, 42, 54, 0.10);
 
   /* Mapped tokens for shadcn/ui components */
-  --card: #ffffff;
-  --card-foreground: #2F3B4D;
+  --card: rgba(255, 255, 255, 0.66);
+  --card-foreground: #232A36;
   --popover: #ffffff;
-  --popover-foreground: #2F3B4D;
+  --popover-foreground: #232A36;
   --primary: #FFC72C;
-  --primary-foreground: #2F3B4D;
-  --secondary: #EFEFE9;
-  --secondary-foreground: #2F3B4D;
-  --muted: #EFEFE9;
-  --muted-foreground: #5C6673;
+  --primary-foreground: #232A36;
+  --secondary: #ECE8DF;
+  --secondary-foreground: #232A36;
+  --muted: #ECE8DF;
+  --muted-foreground: #59616E;
   --accent: #FFC72C;
-  --accent-foreground: #2F3B4D;
+  --accent-foreground: #232A36;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: #E3E1DA;
+  --border: rgba(35, 42, 54, 0.10);
   --input: transparent;
-  --input-background: #f3f3f5;
+  --input-background: rgba(255, 255, 255, 0.6);
   --ring: #FFC72C;
 
   /* Typography */
@@ -38,7 +38,7 @@
   --font-body: 'Inter', sans-serif;
   --font-size: 16px;
 
-  --radius: 0.625rem;
+  --radius: 0.875rem;
 }
 
 @theme inline {
@@ -76,10 +76,10 @@
   --font-heading: var(--font-heading);
   --font-body: var(--font-body);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 6px);
 }
 
 @layer base {
@@ -94,10 +94,17 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    color: var(--foreground);
     font-family: var(--font-body);
     font-size: var(--font-size);
     line-height: 1.6;
+    background-color: var(--background);
+    /* one soft ambient blend behind the whole site so sections feel unified */
+    background-image:
+      radial-gradient(55rem 45rem at 88% -8%, rgba(255, 199, 44, 0.12), transparent 60%),
+      radial-gradient(48rem 42rem at -10% 108%, rgba(40, 48, 61, 0.07), transparent 60%),
+      radial-gradient(40rem 40rem at 50% 50%, rgba(255, 255, 255, 0.35), transparent 70%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -106,10 +113,14 @@
     line-height: 1.15;
     letter-spacing: -0.01em;
   }
+
+  ::selection {
+    background: rgba(255, 199, 44, 0.35);
+  }
 }
 
 @layer components {
-  /* Two-tone heavy display heading, Enactus-Global style */
+  /* Heavy condensed display heading */
   .display {
     font-family: var(--font-display);
     font-weight: 400;
@@ -118,7 +129,7 @@
     text-transform: uppercase;
   }
 
-  /* Small uppercase eyebrow label with a yellow tick */
+  /* Small uppercase eyebrow label */
   .eyebrow {
     font-family: var(--font-heading);
     font-weight: 700;
@@ -127,4 +138,106 @@
     text-transform: uppercase;
     color: var(--gold-accent);
   }
+
+  /* Frosted glass surface for cards over the ambient background */
+  .glass {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 18px 50px -22px rgba(31, 37, 48, 0.30);
+  }
+
+  .glass-soft {
+    background: rgba(255, 255, 255, 0.40);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+  }
+
+  /* Frosted glass over dark / image backgrounds */
+  .glass-dark {
+    background: rgba(27, 34, 45, 0.45);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  /* Rich dark feature section (used sparingly as deliberate moments) */
+  .surface-dark {
+    background:
+      radial-gradient(38rem 26rem at 82% -10%, rgba(255, 199, 44, 0.14), transparent 55%),
+      radial-gradient(30rem 26rem at 5% 110%, rgba(255, 255, 255, 0.06), transparent 55%),
+      linear-gradient(160deg, #28303D 0%, #1B222D 100%);
+  }
+
+  .hover-lift {
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.4s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 60px -28px rgba(31, 37, 48, 0.40);
+  }
+}
+
+/* Cursor-following ripple glow used on dark surfaces.
+   The pointer coordinates are written to --mx / --my by the Spotlight
+   component; registering them as @property lets the glow trail the cursor
+   smoothly instead of snapping. */
+@property --mx {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+@property --my {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+.spotlight {
+  transition: --mx 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), --my 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.spotlight-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    30rem 30rem at var(--mx) var(--my),
+    rgba(255, 199, 44, 0.06),
+    rgba(255, 199, 44, 0.02) 38%,
+    transparent 70%
+  );
+  transition: opacity 1s ease;
+}
+
+.spotlight:hover .spotlight-glow {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight {
+    transition: none;
+  }
+}
+
+/* Auto-scrolling marquee for animated photo collages */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x 40s linear infinite;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }

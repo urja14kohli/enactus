@@ -35,7 +35,7 @@ export default function DisplayHeading({
       className={`display ${sizeMap[size]} ${align === 'center' ? 'text-center' : ''} ${className}`}
     >
       <span className={light ? 'text-white' : 'text-navy-accent'}>{lead}</span>{' '}
-      <span className="text-gold-accent">{accent}</span>
+      <span className={light ? 'text-enactus-yellow' : 'text-gold-accent'}>{accent}</span>
     </Tag>
   );
 }
