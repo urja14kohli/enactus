@@ -325,13 +325,13 @@ export const events: EventItem[] = [
 ];
 
 export const partners = [
-  { name: 'Google Gemini', logo: '' },
-  { name: 'Perplexity', logo: '' },
+  { name: 'Google Gemini', logo: '/images/partners/gemini.png' },
+  { name: 'Perplexity', logo: '/images/partners/perplexity.png' },
+  { name: 'Perfero Perfumes', logo: '/images/partners/perfero.png' },
+  { name: 'Enactus IIT Roorkee', logo: '/images/partners/enactus-iitr.png' },
   { name: 'Comet', logo: '' },
   { name: 'Under 25', logo: '' },
-  { name: 'Enactus IIT Roorkee', logo: '' },
-  { name: 'Perfero Perfumes', logo: '' },
-  { name: 'One Take', logo: '/images/partners/one-take.png' },
+  { name: 'One Take', logo: '' },
   { name: 'Prabhav Trust Foundation', logo: '' },
   { name: 'Human Peace Foundation', logo: '' },
   { name: 'Salaam Baalak Trust', logo: '' },

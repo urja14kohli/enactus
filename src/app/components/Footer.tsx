@@ -21,7 +21,7 @@ export default function Footer() {
 
       {/* glassy call to action sitting at the top of the footer */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16">
-        <div className="glass-dark flex flex-col items-start justify-between gap-6 rounded-3xl px-8 py-9 md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-3xl bg-enactus-yellow/[0.08] px-8 py-9 backdrop-blur-sm md:flex-row md:items-center">
           <div>
             <p className="eyebrow text-enactus-yellow">Be part of it</p>
             <h3 className="mt-2 max-w-xl font-heading text-2xl font-extrabold leading-tight md:text-3xl">
