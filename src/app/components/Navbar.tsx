@@ -41,7 +41,7 @@ export default function Navbar() {
               <img
                 src="/logos/enactus-logo-white.png"
                 alt="Enactus IGDTUW"
-                className="h-11 md:h-12 w-auto"
+                className="h-14 md:h-16 w-auto"
               />
             </Link>
 

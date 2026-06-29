@@ -40,7 +40,7 @@ export default function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <img src="/logos/enactus-logo-white.png" alt="Enactus IGDTUW" className="mb-5 h-14 w-auto" />
+            <img src="/logos/enactus-logo-white.png" alt="Enactus IGDTUW" className="mb-5 h-20 w-auto" />
             <p className="text-sm leading-relaxed text-white/65">
               Student leaders at IGDTUW using entrepreneurial action to create real, lasting impact.
             </p>
