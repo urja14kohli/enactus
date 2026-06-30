@@ -328,13 +328,15 @@ export const partners = [
   { name: 'Google Gemini', logo: '/images/partners/gemini.png' },
   { name: 'Perplexity', logo: '/images/partners/perplexity.png' },
   { name: 'Perfero Perfumes', logo: '/images/partners/perfero.png' },
+  { name: 'Comet', logo: '/images/partners/comet.png', boxed: true, padded: true },
   { name: 'Enactus IIT Roorkee', logo: '/images/partners/enactus-iitr.png' },
-  { name: 'Comet', logo: '' },
-  { name: 'Under 25', logo: '' },
-  { name: 'One Take', logo: '' },
-  { name: 'Prabhav Trust Foundation', logo: '' },
-  { name: 'Human Peace Foundation', logo: '' },
-  { name: 'Salaam Baalak Trust', logo: '' },
+  { name: 'Under 25', logo: '/images/partners/under-25.png' },
+  { name: 'One Take', logo: '/images/partners/onetake.png', boxed: true, padded: true },
+  { name: 'Career Launcher', logo: '/images/partners/career-launcher.png', boxed: true },
+  { name: 'Jamboree', logo: '/images/partners/jamboree.png' },
+  { name: 'Prabhav Trust Foundation', logo: '/images/partners/prabhav.png', boxed: true },
+  { name: 'Human Peace Foundation', logo: '/images/partners/human-peace.png' },
+  { name: 'Salaam Baalak Trust', logo: '/images/partners/salaam-baalak.png', boxed: true },
 ];
 
 export interface TeamMember {

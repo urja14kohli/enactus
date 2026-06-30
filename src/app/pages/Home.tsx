@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
-import { ArrowRight, ArrowUpRight, Rocket, Users, Trophy, Quote } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Quote } from 'lucide-react';
 import AnimatedCounter from '../components/AnimatedCounter';
 import DisplayHeading from '../components/DisplayHeading';
 import Collage from '../components/Collage';
@@ -155,38 +155,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ WHAT WE DO ============ */}
-      <section className="py-8 md:py-12">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-14 max-w-2xl">
-            <div className="eyebrow mb-3">What we do</div>
-            <DisplayHeading lead="Build." accent="Lead. Compete." size="md" />
-          </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              { icon: <Rocket className="h-9 w-9" />, title: 'Build', text: 'We start ventures that solve real social, environmental and economic problems, and run them like actual businesses.' },
-              { icon: <Users className="h-9 w-9" />, title: 'Lead', text: 'We grow into confident changemakers through hands-on entrepreneurship, teamwork and mentorship.' },
-              { icon: <Trophy className="h-9 w-9" />, title: 'Compete', text: 'We take our ideas to national and global stages and test them against the very best.' },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="glass hover-lift rounded-3xl p-8"
-              >
-                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-enactus-yellow/20 text-gold-accent">
-                  {item.icon}
-                </div>
-                <h3 className="mb-3 font-heading text-2xl font-extrabold text-navy-accent">{item.title}</h3>
-                <p className="leading-relaxed text-foreground-secondary">{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ============ FEATURED VENTURES ============ */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
@@ -282,17 +250,25 @@ export default function Home() {
           <h2 className="mb-10 font-heading text-2xl font-extrabold text-navy-accent md:text-3xl">
             Partners &amp; collaborators
           </h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
             {partners.map((p) => (
               <div
                 key={p.name}
-                className="glass flex h-24 items-center justify-center rounded-2xl px-4"
+                className={`flex h-24 items-center justify-center overflow-hidden rounded-[2rem] border border-black/5 bg-white shadow-sm transition-transform duration-300 hover:-translate-y-1 md:h-28 ${p.padded ? 'p-4 md:p-5' : ''}`}
+                title={p.name}
               >
-                {p.logo ? (
-                  <img src={p.logo} alt={p.name} className="max-h-12 max-w-[80%] object-contain" />
-                ) : (
-                  <span className="text-sm font-semibold text-navy-accent">{p.name}</span>
-                )}
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  loading="lazy"
+                  className={
+                    p.padded
+                      ? 'h-full w-auto rounded-2xl object-contain'
+                      : p.boxed
+                        ? 'h-full w-full rounded-2xl object-cover'
+                        : 'max-h-16 w-full max-w-[94%] rounded-2xl object-contain md:max-h-20'
+                  }
+                />
               </div>
             ))}
           </div>

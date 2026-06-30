@@ -70,7 +70,7 @@ function TeamMemberCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: (index % 4) * 0.06, duration: 0.5 }}
-      className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-sm ring-1 ring-white/10"
+      className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5"
     >
       {img ? (
         <img
@@ -80,7 +80,7 @@ function TeamMemberCard({
           className="h-full w-full object-cover object-top grayscale transition-all duration-500 group-hover:scale-[1.04] group-hover:grayscale-0"
         />
       ) : (
-        <div className="surface-dark flex h-full w-full items-center justify-center">
+        <div className="flex h-full w-full items-center justify-center bg-navy-deep/80">
           <span className="font-display text-4xl text-white/20">{member.name.charAt(0)}</span>
         </div>
       )}
@@ -127,7 +127,7 @@ export default function Team() {
   }, []);
 
   return (
-    <div className="surface-dark text-white">
+    <>
       <PageHero
         eyebrow="Our Team"
         lead="The people behind"
@@ -135,9 +135,10 @@ export default function Team() {
         subtitle="The student leaders who show up, put in the hours, and make all of this happen."
         bannerImage="/images/team/team-lineup.jpg"
         compact
+        blendToCream
       />
 
-      <section className="pb-20 pt-10 md:pb-24 md:pt-12">
+      <section className="-mt-24 pb-16 md:-mt-32 md:pb-20">
         <div className="mx-auto max-w-7xl space-y-8 px-6">
           {teamRows.map((row, rowIndex) => (
             <div key={rowIndex} className={row.grid}>
@@ -150,12 +151,12 @@ export default function Team() {
       </section>
 
       {/* Departments */}
-      <section className="border-t border-white/10 py-20 md:py-24">
+      <section className="py-16 md:py-20">
         <div className="mx-auto mb-12 max-w-7xl px-6">
           <div className="max-w-2xl">
-            <div className="eyebrow mb-3 text-enactus-yellow">How we are organised</div>
-            <DisplayHeading lead="Our" accent="teams" size="md" light />
-            <p className="mt-4 leading-relaxed text-white/70">
+            <div className="eyebrow mb-3">How we are organised</div>
+            <DisplayHeading lead="Our" accent="teams" size="md" />
+            <p className="mt-4 leading-relaxed text-foreground-secondary">
               Eight teams, one mission. Each one keeps a different part of Enactus IGDTUW moving.
             </p>
           </div>
@@ -166,7 +167,7 @@ export default function Team() {
             {[...departments, ...departments].map((d, i) => (
               <div
                 key={`${d}-${i}`}
-                className="glass-dark mx-2 w-64 shrink-0 overflow-hidden rounded-2xl ring-1 ring-white/10"
+                className="glass mx-2 w-64 shrink-0 overflow-hidden rounded-2xl"
               >
                 <div className="relative h-32 overflow-hidden">
                   <img
@@ -175,13 +176,13 @@ export default function Team() {
                     loading="lazy"
                     className="h-full w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/55 to-transparent" />
                 </div>
                 <div className="flex items-center gap-3 px-4 py-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-enactus-yellow/20 text-enactus-yellow">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-enactus-yellow/20 text-gold-accent">
                     {deptIcons[d] ?? <Sparkles className="h-5 w-5" />}
                   </span>
-                  <span className="font-heading text-base font-extrabold leading-tight text-white">{d}</span>
+                  <span className="font-heading text-base font-extrabold leading-tight text-navy-accent">{d}</span>
                 </div>
               </div>
             ))}
@@ -190,29 +191,20 @@ export default function Team() {
       </section>
 
       {/* Join CTA */}
-      <section className="border-t border-white/10 px-4 pb-24 pt-8">
-        <div className="glass-dark relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] px-6 py-16 text-center md:py-20">
-          <img
-            src="/images/team/team-lineup.jpg"
-            alt=""
-            aria-hidden
-            className="absolute inset-0 h-full w-full scale-110 object-cover object-bottom opacity-[0.15]"
-          />
-          <div className="absolute inset-0 bg-navy-deep/70" />
-          <div className="relative z-10">
-            <DisplayHeading lead="Want in?" accent="Join the team" size="lg" align="center" light />
-            <p className="mx-auto mb-9 mt-5 max-w-2xl text-white/75">
-              We are always looking for students who want to make a difference. There is a spot here for you.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-enactus-yellow px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-navy-deep transition-colors hover:bg-white"
-            >
-              Apply now <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+      <section className="px-4 pb-24">
+        <div className="surface-dark mx-auto max-w-4xl overflow-hidden rounded-[2rem] px-6 py-16 text-center text-white md:py-20">
+          <DisplayHeading lead="Want in?" accent="Join the team" size="lg" align="center" light />
+          <p className="mx-auto mb-9 mt-5 max-w-2xl text-white/75">
+            We are always looking for students who want to make a difference. There is a spot here for you.
+          </p>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 rounded-full bg-enactus-yellow px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-navy-deep transition-colors hover:bg-white"
+          >
+            Apply now <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
-    </div>
+    </>
   );
 }
