@@ -237,6 +237,9 @@
 .marquee-track.reverse {
   animation-direction: reverse;
 }
+.marquee-track.pause-on-hover:hover {
+  animation-play-state: paused;
+}
 .marquee-mask {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);

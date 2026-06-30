@@ -1,366 +1,188 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
-import { ArrowRight } from 'lucide-react';
+import {
+  ArrowRight,
+  Linkedin,
+  Rocket,
+  CalendarDays,
+  Handshake,
+  Megaphone,
+  Users,
+  Microscope,
+  Wallet,
+  HeartHandshake,
+  Sparkles,
+} from 'lucide-react';
+import { ReactNode, useState, useEffect } from 'react';
 import PageHero from '../components/PageHero';
 import DisplayHeading from '../components/DisplayHeading';
-import { departments } from '../data/content';
-import { useState, useEffect } from "react";
+import { departments, team, photoPool } from '../data/content';
 import { client } from '../../lib/sanity';
-import { urlFor } from "../../lib/imageURL";
+import { urlFor } from '../../lib/imageURL';
 
-interface TeamMember {
-  _id: string;
-  name: string;
-  role: string;
-  bio: string;
-  linkedin?: string;
-  image: any;
-}
+const firstName = (name: string) => name.trim().split(/\s+/)[0].toLowerCase();
 
-interface TileLayout {
-  x: number; y: number; w: number; h: number;
-}
+const normalizeUrl = (url: string) =>
+  url.startsWith('http') ? url : `https://${url}`;
 
-// ─── Role ordering ────────────────────────────────────────────────────────────
-const ROLE_PRIORITY: [string, number][] = [
-  ["business advisor", 0],
-  ["vice", 2],
-  ["president", 1],
-  ["treasurer", 3],
-  ["hr", 4],
-  ["media director", 5],
-  ["director of corporate relations", 5],
-  ["event manager", 5],
-  ["project sahaay head", 6],
-  ["project dhaan head", 6],
-  ["project khajoor head", 7],
+const deptIcons: Record<string, ReactNode> = {
+  Projects: <Rocket className="h-5 w-5" />,
+  'Event Management': <CalendarDays className="h-5 w-5" />,
+  Sponsorship: <Handshake className="h-5 w-5" />,
+  'Media & Marketing': <Megaphone className="h-5 w-5" />,
+  'Human Resources': <Users className="h-5 w-5" />,
+  Research: <Microscope className="h-5 w-5" />,
+  Finance: <Wallet className="h-5 w-5" />,
+  Involve: <HeartHandshake className="h-5 w-5" />,
+};
 
-  
+const deptPhotos: Record<string, string> = {
+  Projects: photoPool[5],
+  'Event Management': photoPool[12],
+  Sponsorship: photoPool[8],
+  'Media & Marketing': photoPool[20],
+  'Human Resources': photoPool[1],
+  Research: photoPool[15],
+  Finance: photoPool[18],
+  Involve: photoPool[3],
+};
+
+const teamRows = [
+  { members: team.slice(0, 4), grid: 'grid grid-cols-2 gap-5 lg:grid-cols-4' },
+  { members: team.slice(4, 8), grid: 'grid grid-cols-2 gap-5 lg:grid-cols-4' },
+  { members: team.slice(8, 13), grid: 'grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5' },
 ];
 
-function getRolePriority(role: string): number {
-  const key = role.toLowerCase().trim();
-  for (const [pat, pri] of ROLE_PRIORITY) {
-    if (key.includes(pat)) return pri;
-  }
-  if (key.includes("project")) return 6;
-  if (key.includes("head")) return 5;
-  return 7;
-}
-
-// ─── Fixed layout: 3 rows, all members visible, no scroll ────────────────────
-//
-// Row 0 (h=38%): up to 4 senior members, wider tiles
-// Row 1 (h=33%): next batch, medium tiles
-// Row 2 (h=29%): remaining, smaller tiles
-//
-// widths are distributed evenly within each row
-
-function buildBaseLayouts(members: TeamMember[]): TileLayout[] {
-  const n = members.length;
-  const layouts: TileLayout[] = new Array(n);
-
-  const rowHeights = [38, 33, 29]; // unchanged
-  const rowCounts = distributeRowsBottomLoaded(n, 3);
-
-  let memberIndex = 0;
-  let yOffset = 0;
-
-  for (let r = 0; r < 3; r++) {
-    const count = rowCounts[r];
-    const h = rowHeights[r];
-    const w = 100 / count;
-
-    for (let c = 0; c < count; c++) {
-      if (memberIndex >= n) break;
-      layouts[memberIndex] = { x: c * w, y: yOffset, w, h };
-      memberIndex++;
-    }
-    yOffset += h;
-  }
-
-  return layouts;
-}
-
-function distributeRowsBottomLoaded(total: number, rows: number): number[] {
-  return [4, 4, 5]; // Row1: 2 Advisors+President+Treasurer | Row2: VP+HR+Media+CorpRel | Row3: Event+3 Project Heads
-}
-
-// ─── Hover: hovered tile grows, row peers compress, canvas stays fixed ────────
-
-function buildHoverLayouts(hoveredIndex: number, base: TileLayout[]): TileLayout[] {
-  const layouts = base.map(l => ({ ...l }));
-  if (!layouts[hoveredIndex]) return layouts;
-
-  const GROW_W = 5;
-  const GROW_H = 4;
-
-  const yValues = [...new Set(base.map(l => Math.round(l.y)))].sort((a, b) => a - b);
-  const rows = yValues.map(y =>
-    base.map((l, i) => ({ l, i }))
-      .filter(({ l }) => Math.round(l.y) === y)
-      .map(({ i }) => i)
-  );
-
-  const myRow = rows.find(r => r.includes(hoveredIndex)) ?? [];
-  const rowPeers = myRow.filter(i => i !== hoveredIndex);
-
-  layouts[hoveredIndex].w += GROW_W;
-  const wShrink = GROW_W / (rowPeers.length || 1);
-  rowPeers.forEach(i => { layouts[i].w -= wShrink; });
-
-  // Re-flow x in hovered row
-  let cursor = 0;
-  myRow.forEach(i => { layouts[i].x = cursor; cursor += layouts[i].w; });
-
-  // Shrink height of column-overlapping tiles in other rows
-  const bx = base[hoveredIndex].x;
-  const bw = base[hoveredIndex].w;
-  rows.forEach(row => {
-    if (row.includes(hoveredIndex)) return;
-    const overlap = row.filter(i => base[i].x < bx + bw && base[i].x + base[i].w > bx);
-    if (!overlap.length) return;
-    const hShrink = GROW_H / overlap.length;
-    overlap.forEach(i => { layouts[i].h -= hShrink; });
-  });
-
-  // Re-flow y
-  rows.forEach((row, ri) => {
-    const rowH = Math.max(...row.map(i => layouts[i].h));
-    const rowY = rows.slice(0, ri).reduce((acc, prevRow) => {
-      return acc + Math.max(...prevRow.map(i => layouts[i].h));
-    }, 0);
-    row.forEach(i => { layouts[i].y = rowY; layouts[i].h = rowH; });
-  });
-
-  return layouts;
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
-
-export default function Team() {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [lockedMember, setLockedMember] = useState<TeamMember | null>(null);
-  const [previewMember, setPreviewMember] = useState<TeamMember | null>(null);
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [baseLayouts, setBaseLayouts] = useState<TileLayout[]>([]);
-
-  useEffect(() => {
-    async function loadMembers() {
-      try {
-        const data: TeamMember[] = await client.fetch(`
-          *[_type == "teamMember"]{ _id, name, role, bio, linkedin, image }
-        `);
-        const sorted = [...data].sort((a, b) => {
-          const diff = getRolePriority(a.role) - getRolePriority(b.role);
-          return diff !== 0 ? diff : a.name.localeCompare(b.name);
-        });
-        setTeamMembers(sorted);
-        setBaseLayouts(buildBaseLayouts(sorted));
-      } catch (err) {
-        console.error("Sanity fetch failed:", err);
-      }
-    }
-    loadMembers();
-  }, []);
-
-  const layouts = hovered !== null
-    ? buildHoverLayouts(hovered, baseLayouts)
-    : baseLayouts;
-
-  const displayMember = previewMember ?? lockedMember;
-
-  if (teamMembers.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-foreground-secondary">
-        Loading team...
-      </div>
-    );
-  }
+function TeamMemberCard({
+  member,
+  index,
+  images,
+}: {
+  member: (typeof team)[number];
+  index: number;
+  images: Record<string, string>;
+}) {
+  const img = images[firstName(member.name)];
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: (index % 4) * 0.06, duration: 0.5 }}
+      className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-sm ring-1 ring-white/10"
+    >
+      {img ? (
+        <img
+          src={img}
+          alt={member.name}
+          loading="lazy"
+          className="h-full w-full object-cover object-top grayscale transition-all duration-500 group-hover:scale-[1.04] group-hover:grayscale-0"
+        />
+      ) : (
+        <div className="surface-dark flex h-full w-full items-center justify-center">
+          <span className="font-display text-4xl text-white/20">{member.name.charAt(0)}</span>
+        </div>
+      )}
+
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/20 to-transparent transition-all duration-500 group-hover:from-navy-deep" />
+
+      <a
+        href={normalizeUrl(member.linkedin)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${member.name} on LinkedIn`}
+        className="absolute right-3 top-3 flex h-9 w-9 translate-y-1 items-center justify-center rounded-full border border-white/30 bg-white/25 text-enactus-yellow opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-white/40 group-hover:translate-y-0 group-hover:opacity-100"
+      >
+        <Linkedin className="h-4 w-4" />
+      </a>
+
+      <div className="absolute inset-x-0 bottom-0 p-4">
+        <p className="font-heading text-base font-extrabold leading-tight text-white">{member.name}</p>
+        <p className="mt-1 text-[11px] font-bold uppercase tracking-wide text-enactus-yellow">{member.role}</p>
+        <p className="mt-2 max-h-0 overflow-hidden text-xs leading-relaxed text-white/85 opacity-0 transition-all duration-400 group-hover:mt-2 group-hover:max-h-24 group-hover:opacity-100">
+          {member.bio}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function Team() {
+  const [images, setImages] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    client
+      .fetch<{ name: string; image: unknown }[]>(`*[_type == "teamMember"]{ name, image }`)
+      .then((data) => {
+        const map: Record<string, string> = {};
+        data.forEach((m) => {
+          if (m.image && m.name) {
+            map[firstName(m.name)] = urlFor(m.image).width(700).height(900).fit('crop').url();
+          }
+        });
+        setImages(map);
+      })
+      .catch((err) => console.error('Sanity fetch failed:', err));
+  }, []);
+
+  return (
+    <div className="surface-dark text-white">
       <PageHero
         eyebrow="Our Team"
         lead="The people behind"
         accent="the impact"
         subtitle="The student leaders who show up, put in the hours, and make all of this happen."
+        bannerImage="/images/team/team-lineup.jpg"
+        compact
       />
 
-      <section className="py-20">
-        <div className="max-w-screen-xl mx-auto px-6">
-          <div className="flex gap-12 items-stretch">
-
-            {/* ── Canvas: fixed aspect ratio, all tiles inside ──────── */}
-            <div
-              className="flex-1 min-w-0 relative"
-              // paddingBottom = 100% means square. We want ~65% for a wide rectangle.
-              style={{ paddingBottom: "55%", flexShrink: 0 }}
-              onClick={() => {
-                setLockedMember(null);
-                setPreviewMember(null);
-              }}
-              onMouseLeave={() => {
-                setHovered(null);
-                setPreviewMember(null);
-              }}
-            >
-              {teamMembers.map((member, index) => {
-                const l = layouts[index] ?? baseLayouts[index];
-                if (!l) return null;
-                const isHovered = hovered === index;
-                const isLocked = lockedMember?._id === member._id;
-                const highlighted = isHovered || isLocked;
-
-                return (
-                  <motion.div
-                    key={member._id}
-                    animate={{
-                      left:   `${l.x}%`,
-                      top:    `${l.y}%`,
-                      width:  `${l.w}%`,
-                      height: `${l.h}%`,
-                    }}
-                    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                    style={{ position: "absolute" }}
-                    className="overflow-hidden cursor-pointer"
-                    onMouseEnter={() => {
-                      setHovered(index);
-                      setPreviewMember(member);
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLockedMember(prev =>
-                        prev?._id === member._id ? null : member
-                      );
-                      setPreviewMember(null);
-                    }}
-                  >
-                    {/* Photo */}
-                    <img
-                      src={member.image
-                        ? urlFor(member.image).width(600).url()
-                        : '/team/placeholder.jpg'}
-                      alt={member.name}
-                      className="absolute inset-0 w-full h-full object-cover object-top grayscale transition-[filter] duration-500"
-                    />
-
-                    {/* Colour overlay */}
-                    <div className={`
-                      absolute inset-0 transition-all duration-400
-                      ${highlighted ? "bg-enactus-yellow/30" : "bg-black/30"}
-                    `} />
-
-                    {/* Selected ring */}
-                    {isLocked && (
-                      <div className="absolute inset-0 ring-[0px] ring-inset ring-enactus-yellow pointer-events-none z-20" />
-                    )}
-
-                    {/* Name label */}
-                    <div className="absolute bottom-0 left-0 right-0 p-2 z-10">
-                      <p className={`
-                        font-black leading-tight transition-all duration-300
-                        ${highlighted ? "text-navy-accent text-sm" : "text-white text-[10px]"}
-                      `}>
-                        {member.name}
-                      </p>
-                      <p className={`
-                        font-semibold transition-all duration-300 text-navy-accent text-[10px]
-                        ${highlighted ? "opacity-100" : "opacity-0"}
-                      `}>
-                        {member.role}
-                      </p>
-                    </div>
-
-                    {/* Gap line between tiles */}
-                    <div className="absolute inset-0 ring-1 ring-background/50 pointer-events-none z-10" />
-                  </motion.div>
-                );
-              })}
+      <section className="pb-20 pt-10 md:pb-24 md:pt-12">
+        <div className="mx-auto max-w-7xl space-y-8 px-6">
+          {teamRows.map((row, rowIndex) => (
+            <div key={rowIndex} className={row.grid}>
+              {row.members.map((m, i) => (
+                <TeamMemberCard key={m.name} member={m} index={rowIndex * 5 + i} images={images} />
+              ))}
             </div>
-
-            {/* ── Sidebar ───────────────────────────────────────────── */}
-            <div
-              className="w-72 flex-shrink-0 flex flex-col justify-center"
-              // stop sidebar clicks from bubbling to canvas reset
-              onClick={(e) => e.stopPropagation()}
-            >
-              {displayMember ? (
-                <motion.div
-                  key={displayMember._id + (previewMember ? "p" : "l")}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.22 }}
-                  className="flex flex-col gap-4"
-                >
-                  <div className="border border-enactus-yellow inline-block px-3 py-1.5 text-xs tracking-widest self-start">
-                    {previewMember ? "CLICK TO SELECT" : "PEOPLE BEHIND IMPACT"}
-                  </div>
-
-                  <div className="text-enactus-yellow uppercase tracking-widest text-xs">
-                    {displayMember.role}
-                  </div>
-
-                  <h2 className="text-4xl font-black leading-tight">
-                    {displayMember.name}
-                  </h2>
-
-                  <p className="text-base text-foreground-secondary leading-relaxed">
-                    {displayMember.bio}
-                  </p>
-
-                  {lockedMember && !previewMember && (
-                    <a
-                      href={lockedMember.linkedin ?? "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-enactus-yellow text-navy-accent px-5 py-3 font-bold text-sm hover:scale-105 transition-transform self-start"
-                    >
-                      View LinkedIn →
-                    </a>
-                  )}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="default"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex flex-col gap-4"
-                >
-                  <div className="border border-enactus-yellow inline-block px-3 py-1.5 text-xs tracking-widest self-start">
-                    PEOPLE BEHIND IMPACT
-                  </div>
-
-                  <h2 className="text-4xl font-black leading-tight">
-                    Meet the team.
-                  </h2>
-
-                  <p className="text-base text-foreground-secondary leading-relaxed">
-                    Click any member to learn more about the passionate students driving change at Enactus IGDTUW.
-                  </p>
-                </motion.div>
-              )}
-            </div>
-
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Departments */}
-      <section className="py-20 md:py-24">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-12">
-            <div className="eyebrow mb-3">How we are organised</div>
-            <DisplayHeading lead="Our" accent="teams" size="md" />
+      <section className="border-t border-white/10 py-20 md:py-24">
+        <div className="mx-auto mb-12 max-w-7xl px-6">
+          <div className="max-w-2xl">
+            <div className="eyebrow mb-3 text-enactus-yellow">How we are organised</div>
+            <DisplayHeading lead="Our" accent="teams" size="md" light />
+            <p className="mt-4 leading-relaxed text-white/70">
+              Eight teams, one mission. Each one keeps a different part of Enactus IGDTUW moving.
+            </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {departments.map((d) => (
+        </div>
+
+        <div className="marquee-mask overflow-hidden">
+          <div className="marquee-track pause-on-hover">
+            {[...departments, ...departments].map((d, i) => (
               <div
-                key={d}
-                className="glass hover-lift rounded-2xl px-5 py-6 text-center font-heading font-bold text-navy-accent"
+                key={`${d}-${i}`}
+                className="glass-dark mx-2 w-64 shrink-0 overflow-hidden rounded-2xl ring-1 ring-white/10"
               >
-                {d}
+                <div className="relative h-32 overflow-hidden">
+                  <img
+                    src={deptPhotos[d] ?? photoPool[0]}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 to-transparent" />
+                </div>
+                <div className="flex items-center gap-3 px-4 py-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-enactus-yellow/20 text-enactus-yellow">
+                    {deptIcons[d] ?? <Sparkles className="h-5 w-5" />}
+                  </span>
+                  <span className="font-heading text-base font-extrabold leading-tight text-white">{d}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -368,21 +190,29 @@ export default function Team() {
       </section>
 
       {/* Join CTA */}
-      <section className="px-4 pb-24">
-        <div className="surface-dark mx-auto max-w-4xl overflow-hidden rounded-[2rem] px-6 py-16 text-center text-white md:py-20">
-          <DisplayHeading lead="Want in?" accent="Join the team" size="lg" align="center" light />
-          <p className="text-white/75 max-w-2xl mx-auto mt-5 mb-9">
-            We are always looking for students who want to make a difference. There is a spot here for you.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-enactus-yellow px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-navy-deep transition-colors hover:bg-white"
-          >
-            Apply now <ArrowRight className="w-4 h-4" />
-          </Link>
+      <section className="border-t border-white/10 px-4 pb-24 pt-8">
+        <div className="glass-dark relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] px-6 py-16 text-center md:py-20">
+          <img
+            src="/images/team/team-lineup.jpg"
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full scale-110 object-cover object-bottom opacity-[0.15]"
+          />
+          <div className="absolute inset-0 bg-navy-deep/70" />
+          <div className="relative z-10">
+            <DisplayHeading lead="Want in?" accent="Join the team" size="lg" align="center" light />
+            <p className="mx-auto mb-9 mt-5 max-w-2xl text-white/75">
+              We are always looking for students who want to make a difference. There is a spot here for you.
+            </p>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded-full bg-enactus-yellow px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-navy-deep transition-colors hover:bg-white"
+            >
+              Apply now <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
-
     </div>
   );
 }

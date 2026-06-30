@@ -20,9 +20,17 @@ export default function Home() {
       {/* ============ HERO ============ */}
       <section className="relative flex min-h-screen items-center">
         <div className="absolute inset-0 z-0">
-          <img src="/images/hero-team.jpg" alt="Team Enactus IGDTUW" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/92 via-navy-deep/72 to-navy-deep/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/85 via-transparent to-navy-deep/30" />
+          <img
+            src="/images/hero-team.png"
+            alt="Team Enactus IGDTUW"
+            className="h-full w-full object-cover object-[43%_center] [filter:saturate(1.06)_contrast(1.04)]"
+          />
+          {/* uniform navy hue wash so the photo reads as branded, not a raw snapshot */}
+          <div className="absolute inset-0 bg-navy-deep/30" />
+          {/* stronger grade behind the headline on the left */}
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/85 via-navy-deep/45 to-navy-deep/25" />
+          {/* gentle floor for the stat strip + soft top */}
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/60 via-transparent to-navy-deep/40" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-28 pb-28">
@@ -33,7 +41,6 @@ export default function Home() {
             className="max-w-3xl"
           >
             <div className="glass-dark mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-enactus-yellow" />
               <span className="eyebrow text-enactus-yellow">Enactus IGDTUW</span>
             </div>
             <h1 className="display mb-6 text-5xl text-white sm:text-6xl md:text-7xl lg:text-[5.5rem]">

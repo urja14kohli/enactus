@@ -337,6 +337,30 @@ export const partners = [
   { name: 'Salaam Baalak Trust', logo: '' },
 ];
 
+export interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  linkedin: string;
+}
+
+// Text content is the source of truth; portraits are matched from Sanity by first name.
+export const team: TeamMember[] = [
+  { name: 'Urja Kohli', role: 'Advising Director', bio: 'dream big, work hard, stay humble', linkedin: 'https://www.linkedin.com/in/urja-kohli04/' },
+  { name: 'Vanshika Kaushika', role: 'Advising Director', bio: 'kindness, purpose, meaningful impact', linkedin: 'https://www.linkedin.com/in/vanshika--kaushik/' },
+  { name: 'Jiya Arora', role: 'President', bio: 'lead with purpose, inspire change', linkedin: 'https://www.linkedin.com/in/jiya-arora-604184329/' },
+  { name: 'Ayushi Sahajwani', role: 'Vice President', bio: 'grow together, create impact', linkedin: 'https://www.linkedin.com/in/ayushi-sahajwani-aa702835b/' },
+  { name: 'Suparna Lahiri', role: 'Treasurer & Operations Director', bio: 'people first, purpose always', linkedin: 'https://www.linkedin.com/in/suparna-l-904636244/' },
+  { name: 'Aparna Parashar', role: 'Director of Event Management', bio: 'bring people together, create memories', linkedin: 'https://www.linkedin.com/in/aparna-parashar-231a31284' },
+  { name: 'Prisha Balyan', role: 'Project Head – Project Dhaan', bio: 'small actions, lasting impact', linkedin: 'https://www.linkedin.com/in/prisha-balyan-72343a318' },
+  { name: 'Prakriti Rathi', role: 'Project Head – Project Sahaay', bio: 'helping people, changing lives', linkedin: 'https://www.linkedin.com/in/prakriti-rathi-110725325/' },
+  { name: 'Saanvi Gupta', role: 'Project Head – Project Khajoor', bio: 'build better communities together', linkedin: 'https://www.linkedin.com/in/saanvi-gupta-033a1a37a/' },
+  { name: 'Harmehar Kaur Suri', role: 'Project Head – Project Khajoor', bio: 'purpose, passion, positive change', linkedin: 'https://www.linkedin.com/in/harmehar-kaur-suri-142334384/' },
+  { name: 'Shreya Madan', role: 'Human Resources Head', bio: 'people grow, communities thrive', linkedin: 'https://www.linkedin.com/in/shreya-madan-713653327' },
+  { name: 'Neha Mongia', role: 'Corporate Relations Manager', bio: 'connect people, create opportunities', linkedin: 'https://www.linkedin.com/in/neha-mongia-140506nn/' },
+  { name: 'Ritika Maan', role: 'Media Lead', bio: 'stories that inspire action', linkedin: 'https://www.linkedin.com/in/ritika-maan/' },
+];
+
 export const departments = [
   'Projects',
   'Event Management',
