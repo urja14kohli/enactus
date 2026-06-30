@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero';
 import DisplayHeading from '../components/DisplayHeading';
 import AnimatedCounter from '../components/AnimatedCounter';
 import PhotoMarquee from '../components/PhotoMarquee';
+import AchievementsCarousel from '../components/AchievementsCarousel';
 import { orgStats, achievements, photoPool } from '../data/content';
 
 const pillars = [
@@ -107,26 +108,11 @@ export default function Impact() {
       {/* Achievements */}
       <section className="pb-20 md:pb-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-14 max-w-2xl">
+          <div className="mb-8 max-w-2xl md:mb-10">
             <div className="eyebrow mb-3">Recognition</div>
             <DisplayHeading lead="A few wins" accent="along the way" size="md" />
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {achievements.map((a, i) => (
-              <motion.div
-                key={a.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="glass rounded-2xl p-6"
-              >
-                <div className="display mb-1 text-lg leading-none text-gold-accent">{a.year}</div>
-                <h3 className="mb-1 font-heading font-bold leading-snug text-navy-accent">{a.title}</h3>
-                <p className="text-sm leading-relaxed text-foreground-secondary">{a.detail}</p>
-              </motion.div>
-            ))}
-          </div>
+          <AchievementsCarousel items={achievements} />
         </div>
       </section>
 

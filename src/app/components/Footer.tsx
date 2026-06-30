@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import { Mail, MapPin, Linkedin, Instagram, ArrowUpRight } from 'lucide-react';
 import Spotlight from './Spotlight';
+import { JOIN_FORM_URL } from '../data/content';
 
 const explore = [
   { name: 'About', path: '/about' },
@@ -28,12 +29,14 @@ export default function Footer() {
               Got an idea that could help someone? Let us build it together.
             </h3>
           </div>
-          <Link
-            to="/contact"
+          <a
+            href={JOIN_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-enactus-yellow px-7 py-3.5 text-sm font-extrabold uppercase tracking-wide text-navy-deep transition-colors hover:bg-white"
           >
             Join Us <ArrowUpRight className="h-4 w-4" />
-          </Link>
+          </a>
         </div>
       </div>
 
@@ -64,12 +67,30 @@ export default function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-enactus-yellow" />
-                <span className="text-white/75">IGDTUW, Kashmere Gate, New Delhi</span>
+                <div className="leading-relaxed text-white/75">
+                  <a
+                    href="https://www.igdtuw.ac.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-enactus-yellow"
+                  >
+                    Indira Gandhi Delhi Technical University for Women
+                  </a>
+                  <span className="block text-white/55">Kashmere Gate, New Delhi 110006</span>
+                  <a
+                    href="https://share.google/6sl9OUNl1tVDbK1gl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block text-sm text-enactus-yellow/85 transition-colors hover:text-enactus-yellow"
+                  >
+                    View on map
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 shrink-0 text-enactus-yellow" />
-                <a href="mailto:enactus@igdtuw.ac.in" className="text-white/75 transition-colors hover:text-enactus-yellow">
-                  enactus@igdtuw.ac.in
+                <a href="mailto:enactus.igdtuw@gmail.com" className="text-white/75 transition-colors hover:text-enactus-yellow">
+                  enactus.igdtuw@gmail.com
                 </a>
               </li>
             </ul>

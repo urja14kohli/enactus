@@ -6,7 +6,8 @@ import DisplayHeading from '../components/DisplayHeading';
 import Collage from '../components/Collage';
 import PhotoMarquee from '../components/PhotoMarquee';
 import Spotlight from '../components/Spotlight';
-import { ventures, orgStats, achievements, partners, photoPool } from '../data/content';
+import AchievementsCarousel from '../components/AchievementsCarousel';
+import { ventures, orgStats, achievements, partners, photoPool, JOIN_FORM_URL } from '../data/content';
 
 const heroStats = [
   { value: '850+', label: 'Lives impacted' },
@@ -58,12 +59,14 @@ export default function Home() {
               >
                 Explore ventures <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link
-                to="/contact"
+              <a
+                href={JOIN_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-white/5 px-7 py-3.5 text-sm font-extrabold uppercase tracking-wide text-white backdrop-blur transition-colors hover:bg-white/15"
               >
                 Join us
-              </Link>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -220,26 +223,18 @@ export default function Home() {
       {/* ============ ACHIEVEMENTS ============ */}
       <section className="py-8 md:py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-14 max-w-2xl">
+          <div className="mb-8 max-w-2xl md:mb-10">
             <div className="eyebrow mb-3">Recognition</div>
             <DisplayHeading lead="A few things" accent="we are proud of" size="md" />
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {achievements.map((a, i) => (
-              <motion.div
-                key={a.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06, duration: 0.5 }}
-                className="glass rounded-2xl p-6"
-              >
-                <div className="display mb-2 text-lg leading-none text-gold-accent">{a.year}</div>
-                <h3 className="mb-1 font-heading font-bold leading-snug text-navy-accent">{a.title}</h3>
-                <p className="text-sm leading-relaxed text-foreground-secondary">{a.detail}</p>
-              </motion.div>
-            ))}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+          >
+            <AchievementsCarousel items={achievements} />
+          </motion.div>
         </div>
       </section>
 
@@ -264,9 +259,11 @@ export default function Home() {
                   className={
                     p.padded
                       ? 'h-full w-auto rounded-2xl object-contain'
-                      : p.boxed
-                        ? 'h-full w-full rounded-2xl object-cover'
-                        : 'max-h-16 w-full max-w-[94%] rounded-2xl object-contain md:max-h-20'
+                      : p.large
+                        ? 'max-h-[5.5rem] w-[92%] rounded-2xl object-contain md:max-h-[6.5rem]'
+                        : p.boxed
+                          ? 'h-full w-full rounded-2xl object-cover'
+                          : 'max-h-16 w-full max-w-[94%] rounded-2xl object-contain md:max-h-20'
                   }
                 />
               </div>
@@ -299,12 +296,14 @@ export default function Home() {
               ready to work on it with people who feel the same.
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <Link
-                to="/contact"
+              <a
+                href={JOIN_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-navy-accent px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-white transition-colors hover:bg-navy-deep"
               >
                 Become an Enactor <ArrowRight className="h-4 w-4" />
-              </Link>
+              </a>
               <Link
                 to="/team"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-navy-accent/30 px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-navy-accent transition-colors hover:bg-navy-accent hover:text-white"

@@ -16,7 +16,7 @@ import {
 import { ReactNode, useState, useEffect } from 'react';
 import PageHero from '../components/PageHero';
 import DisplayHeading from '../components/DisplayHeading';
-import { departments, team, photoPool } from '../data/content';
+import { departments, team, team2425, photoPool, JOIN_FORM_URL, type TeamMember } from '../data/content';
 import { client } from '../../lib/sanity';
 import { urlFor } from '../../lib/imageURL';
 
@@ -47,22 +47,39 @@ const deptPhotos: Record<string, string> = {
   Involve: photoPool[3],
 };
 
-const teamRows = [
-  { members: team.slice(0, 4), grid: 'grid grid-cols-2 gap-5 lg:grid-cols-4' },
-  { members: team.slice(4, 8), grid: 'grid grid-cols-2 gap-5 lg:grid-cols-4' },
-  { members: team.slice(8, 13), grid: 'grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5' },
-];
+type TeamYear = '2025-26' | '2024-25';
+
+function buildTeamRows(members: TeamMember[]) {
+  if (members.length <= 6) {
+    return [
+      { members: members.slice(0, 4), grid: 'grid grid-cols-2 gap-5 lg:grid-cols-4' },
+      { members: members.slice(4), grid: 'grid grid-cols-2 gap-5 lg:max-w-2xl lg:mx-auto' },
+    ].filter((row) => row.members.length > 0);
+  }
+
+  return [
+    { members: members.slice(0, 4), grid: 'grid grid-cols-2 gap-5 lg:grid-cols-4' },
+    { members: members.slice(4, 8), grid: 'grid grid-cols-2 gap-5 lg:grid-cols-4' },
+    { members: members.slice(8), grid: 'grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5' },
+  ].filter((row) => row.members.length > 0);
+}
+
+const teamByYear: Record<TeamYear, TeamMember[]> = {
+  '2025-26': team,
+  '2024-25': team2425,
+};
 
 function TeamMemberCard({
   member,
   index,
   images,
 }: {
-  member: (typeof team)[number];
+  member: TeamMember;
   index: number;
   images: Record<string, string>;
 }) {
-  const img = images[firstName(member.name)];
+  const img = member.photo ?? images[firstName(member.name)];
+  const hasLinkedin = Boolean(member.linkedin?.trim());
 
   return (
     <motion.div
@@ -87,15 +104,17 @@ function TeamMemberCard({
 
       <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/20 to-transparent transition-all duration-500 group-hover:from-navy-deep" />
 
-      <a
-        href={normalizeUrl(member.linkedin)}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${member.name} on LinkedIn`}
-        className="absolute right-3 top-3 flex h-9 w-9 translate-y-1 items-center justify-center rounded-full border border-white/30 bg-white/25 text-enactus-yellow opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-white/40 group-hover:translate-y-0 group-hover:opacity-100"
-      >
-        <Linkedin className="h-4 w-4" />
-      </a>
+      {hasLinkedin && (
+        <a
+          href={normalizeUrl(member.linkedin)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${member.name} on LinkedIn`}
+          className="absolute right-3 top-3 flex h-9 w-9 translate-y-1 items-center justify-center rounded-full border border-white/30 bg-white/25 text-enactus-yellow opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-white/40 group-hover:translate-y-0 group-hover:opacity-100"
+        >
+          <Linkedin className="h-4 w-4" />
+        </a>
+      )}
 
       <div className="absolute inset-x-0 bottom-0 p-4">
         <p className="font-heading text-base font-extrabold leading-tight text-white">{member.name}</p>
@@ -110,6 +129,10 @@ function TeamMemberCard({
 
 export default function Team() {
   const [images, setImages] = useState<Record<string, string>>({});
+  const [year, setYear] = useState<TeamYear>('2025-26');
+
+  const activeTeam = teamByYear[year];
+  const teamRows = buildTeamRows(activeTeam);
 
   useEffect(() => {
     client
@@ -138,15 +161,37 @@ export default function Team() {
         blendToCream
       />
 
-      <section className="-mt-24 pb-16 md:-mt-32 md:pb-20">
-        <div className="mx-auto max-w-7xl space-y-8 px-6">
-          {teamRows.map((row, rowIndex) => (
-            <div key={rowIndex} className={row.grid}>
-              {row.members.map((m, i) => (
-                <TeamMemberCard key={m.name} member={m} index={rowIndex * 5 + i} images={images} />
+      <section className="relative z-20 -mt-24 pb-16 md:-mt-32 md:pb-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-8 flex justify-end">
+            <div className="relative z-30 inline-flex rounded-full border border-black/8 bg-white p-1 shadow-sm">
+              {(['2025-26', '2024-25'] as TeamYear[]).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  aria-pressed={year === option}
+                  onClick={() => setYear(option)}
+                  className={`cursor-pointer rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-wide transition-colors sm:px-5 sm:text-sm ${
+                    year === option
+                      ? 'bg-navy-deep text-white'
+                      : 'text-navy-accent/70 hover:text-navy-accent'
+                  }`}
+                >
+                  {option}
+                </button>
               ))}
             </div>
-          ))}
+          </div>
+
+          <div key={year} className="space-y-8">
+            {teamRows.map((row, rowIndex) => (
+              <div key={`${year}-${rowIndex}`} className={row.grid}>
+                {row.members.map((m, i) => (
+                  <TeamMemberCard key={`${year}-${m.name}`} member={m} index={rowIndex * 5 + i} images={images} />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -197,12 +242,14 @@ export default function Team() {
           <p className="mx-auto mb-9 mt-5 max-w-2xl text-white/75">
             We are always looking for students who want to make a difference. There is a spot here for you.
           </p>
-          <Link
-            to="/contact"
+          <a
+            href={JOIN_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-enactus-yellow px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-navy-deep transition-colors hover:bg-white"
           >
             Apply now <ArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
         </div>
       </section>
     </>

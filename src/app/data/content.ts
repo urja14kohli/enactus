@@ -1,6 +1,8 @@
 // Central content for Enactus IGDTUW, sourced from the Annual Impact Report
 // 2025-26, the 2015 to 2023 Magazine, and the Khajoor & Vidyuta project reports.
 
+export const JOIN_FORM_URL = 'https://forms.gle/TPDEfCpcoobDeFWp6';
+
 export interface ImpactStat {
   value: string;
   label: string;
@@ -250,12 +252,71 @@ export const orgStats = [
   { value: 10, suffix: '+', label: 'Partners & Collaborators' },
 ];
 
-export const achievements = [
-  { year: '2016', title: 'National Rookie League, Winners', detail: 'First all-girls team ever to win the Enactus India Nationals Rookie League, in Mumbai.' },
-  { year: '2026', title: 'Convectus 2026, 1st Position', detail: 'Project Dhaan won the Convectus 2026 Business Plan Competition.' },
-  { year: '2026', title: 'Best Paper Award', detail: 'Project Khajoor recognised at the Enactus Global Research Network Conference.' },
-  { year: '2026', title: 'Envision 2026, IIT Roorkee, Top 20', detail: 'Project Khajoor reached the finals and earned a Special Mention.' },
-  { year: '2026', title: 'The Visionary\u2019s Arena, 2nd Position', detail: 'Project Khajoor, hosted by SGND Khalsa College, Delhi University.' },
+export interface Achievement {
+  year: string;
+  title: string;
+  event: string;
+  location: string;
+  image: string;
+}
+
+export const achievements: Achievement[] = [
+  {
+    year: '2026',
+    title: 'Best Case Study Award',
+    event: 'Enactus World Cup 2026',
+    location: 'Bangkok, Thailand',
+    image: '/images/achievements/world-cup.png',
+  },
+  {
+    year: '2016',
+    title: 'Rookie League, Winners',
+    event: 'Enactus India Nationals',
+    location: 'First all-girls team ever to win, Mumbai',
+    image: '/images/achievements/rookie-league.png',
+  },
+  {
+    year: '2026',
+    title: '1st Position',
+    event: 'Convectus Manthan 2026',
+    location: 'Social Business Plan Competition',
+    image: '/images/achievements/convectus.png',
+  },
+  {
+    year: '2026',
+    title: 'Special Mention, Top 20',
+    event: 'Envision 2026',
+    location: 'IIT Roorkee',
+    image: '/images/achievements/envision.png',
+  },
+  {
+    year: '2026',
+    title: 'Winner, 1st Position',
+    event: 'InnovaEarth Ideathon',
+    location: 'NSUT Delhi',
+    image: '/images/achievements/innovearth.png',
+  },
+  {
+    year: '2026',
+    title: '2nd Position',
+    event: 'The Visionary\u2019s Arena',
+    location: 'SGND Khalsa College, Delhi University',
+    image: '/images/achievements/visionarys-arena.png',
+  },
+  {
+    year: '2026',
+    title: 'Winner, B-Plan Competition',
+    event: 'Aarambh',
+    location: 'IMT Nagpur',
+    image: '/images/achievements/aarambh.png',
+  },
+  {
+    year: '2024',
+    title: 'Top 3',
+    event: 'Business Plan Competition, Becon\u201924',
+    location: 'IIT Delhi',
+    image: '/images/achievements/becon.png',
+  },
 ];
 
 export interface EventItem {
@@ -265,9 +326,29 @@ export interface EventItem {
   description: string;
   stats: string[];
   image: string;
+  images?: string[];
 }
 
 export const events: EventItem[] = [
+  {
+    name: 'Under25 Summit @ IGDTUW',
+    kind: 'Enabled by Zerodha',
+    when: 'Apr 2025',
+    description:
+      'The first Under25 Summit at IGDTUW, brought to campus by Enactus and powered by Zerodha. A packed auditorium, live performances, and hundreds of students cheering with their phones in the air.',
+    stats: ['Enabled by Zerodha', 'First summit at IGDTUW', 'Packed auditorium'],
+    image: '/images/events/under25-summit-crowd.png',
+    images: ['/images/events/under25-summit-crowd.png', '/images/events/under25-summit-stage.png'],
+  },
+  {
+    name: 'Enactova',
+    kind: 'Flagship Business Plan Competition',
+    when: 'Apr 2025',
+    description:
+      'Our flagship business plan competition at IGDTUW, where student teams pitched social-impact ventures on stage, backed by mentors and judged in front of a full house.',
+    stats: ['Flagship B-Plan comp', 'Hosted at IGDTUW', 'Social-impact ventures'],
+    image: '/images/events/enactova.png',
+  },
   {
     name: 'CaseForge 2026',
     kind: 'Flagship Case Competition',
@@ -276,15 +357,6 @@ export const events: EventItem[] = [
       'Our biggest event of the year. A pan-India case competition where students crack real business problems, backed by a pro bootcamp and an offline finale judged by industry experts.',
     stats: ['1,300+ registrations', 'Pan-India participation', 'Bootcamp + offline finale'],
     image: '/images/photos/photo-13.jpg',
-  },
-  {
-    name: 'Under 25 Summit',
-    kind: 'Student Engagement',
-    when: '2025',
-    description:
-      'We took Enactus IGDTUW to one of the country\u2019s biggest youth platforms, showcasing our work and connecting with thousands of students.',
-    stats: ['1,000+ registrations driven', 'Massive student reach', 'New collaborations'],
-    image: '/images/photos/photo-14.jpg',
   },
   {
     name: 'Talent Hunt Fest',
@@ -331,12 +403,18 @@ export const partners = [
   { name: 'Comet', logo: '/images/partners/comet.png', boxed: true, padded: true },
   { name: 'Enactus IIT Roorkee', logo: '/images/partners/enactus-iitr.png' },
   { name: 'Under 25', logo: '/images/partners/under-25.png' },
-  { name: 'One Take', logo: '/images/partners/onetake.png', boxed: true, padded: true },
+  { name: 'One Take', logo: '/images/partners/onetake.png', large: true },
   { name: 'Career Launcher', logo: '/images/partners/career-launcher.png', boxed: true },
   { name: 'Jamboree', logo: '/images/partners/jamboree.png' },
   { name: 'Prabhav Trust Foundation', logo: '/images/partners/prabhav.png', boxed: true },
   { name: 'Human Peace Foundation', logo: '/images/partners/human-peace.png' },
   { name: 'Salaam Baalak Trust', logo: '/images/partners/salaam-baalak.png', boxed: true },
+  { name: 'Enactus Canada', logo: '/images/partners/enactus-canada.png' },
+  { name: 'KPMG', logo: '/images/partners/kpmg.png' },
+  { name: 'Expertbells', logo: '/images/partners/expertbells.png' },
+  { name: 'ForeTeach', logo: '/images/partners/foreteach.png' },
+  { name: 'Sakhi Saheli', logo: '/images/partners/sakhi-saheli.png' },
+  { name: 'IMT', logo: '/images/partners/imt.png' },
 ];
 
 export interface TeamMember {
@@ -344,6 +422,7 @@ export interface TeamMember {
   role: string;
   bio: string;
   linkedin: string;
+  photo?: string;
 }
 
 // Text content is the source of truth; portraits are matched from Sanity by first name.
@@ -351,7 +430,7 @@ export const team: TeamMember[] = [
   { name: 'Urja Kohli', role: 'Advising Director', bio: 'dream big, work hard, stay humble', linkedin: 'https://www.linkedin.com/in/urja-kohli04/' },
   { name: 'Vanshika Kaushika', role: 'Advising Director', bio: 'kindness, purpose, meaningful impact', linkedin: 'https://www.linkedin.com/in/vanshika--kaushik/' },
   { name: 'Jiya Arora', role: 'President', bio: 'lead with purpose, inspire change', linkedin: 'https://www.linkedin.com/in/jiya-arora-604184329/' },
-  { name: 'Ayushi Sahajwani', role: 'Vice President', bio: 'grow together, create impact', linkedin: 'https://www.linkedin.com/in/ayushi-sahajwani-aa702835b/' },
+  { name: 'Ayushi Sahajwani', role: 'Vice President', bio: 'grow together, create impact', linkedin: 'https://www.linkedin.com/in/ayushi-sahajwani-aa702835b/', photo: '/images/team/ayushi-sahajwani.jpg' },
   { name: 'Suparna Lahiri', role: 'Treasurer & Operations Director', bio: 'people first, purpose always', linkedin: 'https://www.linkedin.com/in/suparna-l-904636244/' },
   { name: 'Aparna Parashar', role: 'Director of Event Management', bio: 'bring people together, create memories', linkedin: 'https://www.linkedin.com/in/aparna-parashar-231a31284' },
   { name: 'Prisha Balyan', role: 'Project Head – Project Dhaan', bio: 'small actions, lasting impact', linkedin: 'https://www.linkedin.com/in/prisha-balyan-72343a318' },
@@ -361,6 +440,17 @@ export const team: TeamMember[] = [
   { name: 'Shreya Madan', role: 'Human Resources Head', bio: 'people grow, communities thrive', linkedin: 'https://www.linkedin.com/in/shreya-madan-713653327' },
   { name: 'Neha Mongia', role: 'Corporate Relations Manager', bio: 'connect people, create opportunities', linkedin: 'https://www.linkedin.com/in/neha-mongia-140506nn/' },
   { name: 'Ritika Maan', role: 'Media Lead', bio: 'stories that inspire action', linkedin: 'https://www.linkedin.com/in/ritika-maan/' },
+];
+
+export const team2425: TeamMember[] = [
+  { name: 'Urja Kohli', role: 'President', bio: 'dream big, work hard, stay humble', linkedin: 'https://www.linkedin.com/in/urja-kohli04/' },
+  { name: 'Vanshika Kaushika', role: 'President', bio: 'kindness, purpose, meaningful impact', linkedin: 'https://www.linkedin.com/in/vanshika--kaushik/' },
+  { name: 'Suparna Lahiri', role: 'Human Resources Head', bio: 'people first, purpose always', linkedin: 'https://www.linkedin.com/in/suparna-l-904636244/' },
+  { name: 'Vanshika Sharma', role: 'Project Head – Project Vidyuta', bio: 'powering change through innovation', linkedin: 'https://www.linkedin.com/in/vanshekasharma/', photo: '/images/team/vanshika-sharma.jpg' },
+  { name: 'Urvashi Yadav', role: 'Project Head – Project Vidyuta', bio: 'powering change through innovation', linkedin: '', photo: '/images/team/urvashi-yadav.jpg' },
+  { name: 'Ananya Arora', role: 'Treasurer', bio: 'steady hands, strong foundations', linkedin: 'https://www.linkedin.com/in/arora-ananya/', photo: '/images/team/ananya-arora.png' },
+  { name: 'Bhoomi Agrawal', role: 'Project Head – Project Khajoor', bio: 'build better communities together', linkedin: 'https://www.linkedin.com/in/bhoomi-aggarwal-078937287/', photo: '/images/team/bhoomi-agrawal.jpg' },
+  { name: 'Vidhi Saxena', role: 'Project Head – Project Khajoor', bio: 'build better communities together', linkedin: 'https://www.linkedin.com/in/vidhi-saxena-86150a243/', photo: '/images/team/vidhi-saxena.jpg' },
 ];
 
 export const departments = [
@@ -376,3 +466,55 @@ export const departments = [
 
 // Photo pool for collages and the gallery
 export const photoPool = Array.from({ length: 34 }, (_, i) => `/images/photos/photo-${String(i + 1).padStart(2, '0')}.jpg`);
+
+export interface GalleryItem {
+  src: string;
+  zoom?: boolean;
+  alt?: string;
+}
+
+const galleryCore = [
+  ...Array.from({ length: 24 }, (_, i) => `/images/gallery/gallery-${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 9 }, (_, i) => `/images/photos/photo-${String(i + 26).padStart(2, '0')}.jpg`),
+];
+
+const galleryEventImages = [
+  '/images/events/under25-summit-crowd.png',
+  '/images/events/under25-summit-stage.png',
+  '/images/events/enactova.png',
+];
+
+/** Cutout / black-background shots — zoom in so the frame fills with the subject. */
+const galleryZoomSources = new Set([
+  '/images/gallery/gallery-03.jpg',
+  '/images/gallery/gallery-05.jpg',
+  '/images/gallery/gallery-06.jpg',
+  '/images/gallery/gallery-07.jpg',
+  '/images/gallery/gallery-10.jpg',
+  '/images/gallery/gallery-12.jpg',
+  '/images/photos/photo-24.jpg',
+  '/images/photos/photo-26.jpg',
+  '/images/photos/photo-29.jpg',
+]);
+
+export function buildGalleryItems(): GalleryItem[] {
+  const awards = achievements.map((a) => a.image);
+  const items: GalleryItem[] = galleryEventImages.map((src) => ({ src, alt: 'Enactus IGDTUW event' }));
+
+  let awardIdx = 0;
+  for (const src of galleryCore) {
+    items.push({ src, zoom: galleryZoomSources.has(src) });
+
+    if (items.length % 4 === 0 && awardIdx < awards.length) {
+      const achievement = achievements[awardIdx++];
+      items.push({ src: achievement.image, alt: `${achievement.title} — ${achievement.event}` });
+    }
+  }
+
+  while (awardIdx < awards.length) {
+    const achievement = achievements[awardIdx++];
+    items.push({ src: achievement.image, alt: `${achievement.title} — ${achievement.event}` });
+  }
+
+  return items;
+}

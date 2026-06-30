@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 import PageHero from '../components/PageHero';
-import { photoPool } from '../data/content';
+import { buildGalleryItems, photoPool } from '../data/content';
 
-const galleryExtra = Array.from({ length: 25 }, (_, i) => `/images/gallery/gallery-${String(i + 1).padStart(2, '0')}.jpg`);
-const images = [...photoPool, ...galleryExtra];
+const images = buildGalleryItems();
 
 export default function Gallery() {
   const [active, setActive] = useState<string | null>(null);
@@ -17,28 +16,40 @@ export default function Gallery() {
         lead="Moments that"
         accent="stayed with us"
         subtitle="Events, field visits, competitions and the people behind it all. A look at our journey, one frame at a time."
-        images={[photoPool[0], photoPool[2], photoPool[12], photoPool[18], photoPool[3]]}
+        images={[
+          '/images/events/under25-summit-crowd.png',
+          '/images/events/enactova.png',
+          photoPool[0],
+          photoPool[12],
+          photoPool[18],
+        ]}
       />
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="columns-2 gap-4 [column-fill:_balance] md:columns-3 lg:columns-4">
-            {images.map((src, index) => (
+            {images.map((item, index) => (
               <motion.button
-                key={src + index}
+                key={item.src + index}
                 type="button"
-                onClick={() => setActive(src)}
+                onClick={() => setActive(item.src)}
                 initial={{ opacity: 0, scale: 0.96 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: (index % 8) * 0.04 }}
-                className="group relative mb-4 block w-full break-inside-avoid overflow-hidden rounded-2xl ring-1 ring-black/5 shadow-sm"
+                className={`group relative mb-4 block w-full break-inside-avoid overflow-hidden rounded-2xl bg-background-cream ring-1 ring-black/5 shadow-sm ${
+                  item.zoom ? 'aspect-[4/5]' : ''
+                }`}
               >
                 <img
-                  src={src}
-                  alt={`Enactus IGDTUW gallery ${index + 1}`}
+                  src={item.src}
+                  alt={item.alt ?? `Enactus IGDTUW gallery ${index + 1}`}
                   loading="lazy"
-                  className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className={
+                    item.zoom
+                      ? 'h-full w-full scale-[1.45] object-cover object-center transition-transform duration-500 group-hover:scale-[1.55]'
+                      : 'w-full object-cover transition-transform duration-500 group-hover:scale-105'
+                  }
                 />
                 <div className="absolute inset-0 bg-navy-deep/0 transition-colors group-hover:bg-navy-deep/25" />
               </motion.button>

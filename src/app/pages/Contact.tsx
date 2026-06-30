@@ -90,8 +90,8 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="mb-1 font-heading font-bold text-navy-accent">Email</h3>
-                <a href="mailto:enactus@igdtuw.ac.in" className="text-sm text-foreground-secondary transition-colors hover:text-gold-accent">
-                  enactus@igdtuw.ac.in
+                <a href="mailto:enactus.igdtuw@gmail.com" className="text-sm text-foreground-secondary transition-colors hover:text-gold-accent">
+                  enactus.igdtuw@gmail.com
                 </a>
               </div>
             </div>
@@ -103,8 +103,25 @@ export default function Contact() {
               <div>
                 <h3 className="mb-1 font-heading font-bold text-navy-accent">Where to find us</h3>
                 <p className="text-sm leading-relaxed text-foreground-secondary">
-                  Indira Gandhi Delhi Technical University for Women,<br />
+                  <a
+                    href="https://www.igdtuw.ac.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-gold-accent"
+                  >
+                    Indira Gandhi Delhi Technical University for Women
+                  </a>
+                  <br />
                   Kashmere Gate, New Delhi 110006
+                  <br />
+                  <a
+                    href="https://share.google/6sl9OUNl1tVDbK1gl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block font-medium text-gold-accent transition-colors hover:text-navy-accent"
+                  >
+                    View on map
+                  </a>
                 </p>
               </div>
             </div>

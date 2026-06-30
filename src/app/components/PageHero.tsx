@@ -25,7 +25,7 @@ export default function PageHero({ eyebrow, lead, accent, subtitle, images, bann
   return (
     <section
       className={`relative text-white ${
-        blendToCream ? 'overflow-visible bg-transparent' : seamless ? 'overflow-hidden bg-transparent' : 'surface-dark overflow-hidden'
+        blendToCream ? 'pointer-events-none overflow-visible bg-transparent' : seamless ? 'overflow-hidden bg-transparent' : 'surface-dark overflow-hidden'
       } ${blendToCream ? blendPad : compact ? 'pt-28 pb-12 md:pt-32 md:pb-14' : 'pt-36 pb-24 md:pt-44 md:pb-28'}`}
     >
       {blendToCream && bannerImage ? (
@@ -65,7 +65,7 @@ export default function PageHero({ eyebrow, lead, accent, subtitle, images, bann
           </div>
         )
       )}
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pointer-events-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}

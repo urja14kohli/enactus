@@ -1,12 +1,61 @@
-import { motion } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Calendar } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import DisplayHeading from '../components/DisplayHeading';
 import PhotoMarquee from '../components/PhotoMarquee';
-import { events, photoPool } from '../data/content';
+import { events, photoPool, type EventItem } from '../data/content';
+
+function eventPhotos(e: EventItem) {
+  return e.images?.length ? e.images : [e.image];
+}
+
+function FeaturedEventImage({ event }: { event: EventItem }) {
+  const photos = eventPhotos(event);
+  const [photoIndex, setPhotoIndex] = useState(0);
+
+  useEffect(() => {
+    if (photos.length < 2) return;
+    const id = setInterval(() => setPhotoIndex((i) => (i + 1) % photos.length), 4500);
+    return () => clearInterval(id);
+  }, [photos.length]);
+
+  return (
+    <div className="relative h-64 md:h-auto md:min-h-[22rem]">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={photos[photoIndex]}
+          src={photos[photoIndex]}
+          alt={event.name}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+      </AnimatePresence>
+      {photos.length > 1 && (
+        <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+          {photos.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === photoIndex ? 'w-5 bg-enactus-yellow' : 'w-1.5 bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+      )}
+      <span className="absolute left-5 top-5 rounded-full bg-enactus-yellow px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-navy-deep">
+        Latest
+      </span>
+    </div>
+  );
+}
 
 export default function Events() {
   const [featured, ...rest] = events;
+  const heroImages = events.flatMap((e) => eventPhotos(e)).slice(0, 8);
 
   return (
     <main>
@@ -15,22 +64,18 @@ export default function Events() {
         lead="Where it all"
         accent="comes alive"
         subtitle="Competitions, summits, outreach drives and the everyday moments in between. This is the year as we lived it, out in the open and on the ground."
-        images={events.map((e) => e.image)}
+        images={heroImages}
       />
 
       {/* Featured event */}
       <section className="py-20 md:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <div className="glass hover-lift grid overflow-hidden rounded-3xl md:grid-cols-2">
-            <div className="relative h-64 md:h-auto">
-              <img src={featured.image} alt={featured.name} className="h-full w-full object-cover" />
-              <span className="absolute left-5 top-5 rounded-full bg-enactus-yellow px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-navy-deep">
-                Flagship
-              </span>
-            </div>
+            <FeaturedEventImage event={featured} />
             <div className="p-8 md:p-10">
               <p className="eyebrow mb-2">{featured.kind}</p>
               <h2 className="font-heading text-3xl font-extrabold text-navy-accent md:text-4xl">{featured.name}</h2>
+              <p className="mt-1 text-sm font-semibold text-gold-accent">{featured.when}</p>
               <p className="mt-4 leading-relaxed text-foreground-secondary">{featured.description}</p>
               <div className="mt-6 flex flex-wrap gap-2">
                 {featured.stats.map((s) => (

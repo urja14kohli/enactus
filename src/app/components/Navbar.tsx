@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { JOIN_FORM_URL } from '../data/content';
 
 const mainLinks = [
   { name: 'About', path: '/about' },
@@ -65,12 +66,14 @@ export default function Navbar() {
             </nav>
 
             <div className="hidden lg:flex items-center gap-4">
-              <Link
-                to="/contact"
+              <a
+                href={JOIN_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-6 py-2.5 bg-enactus-yellow text-navy-deep text-sm font-extrabold uppercase tracking-wide rounded-md hover:bg-white transition-colors"
               >
                 Join Us
-              </Link>
+              </a>
             </div>
 
             <button
@@ -115,13 +118,15 @@ export default function Navbar() {
                   </Link>
                 ))}
               </div>
-              <Link
-                to="/contact"
+              <a
+                href={JOIN_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block w-full mt-8 py-4 bg-enactus-yellow text-navy-deep font-extrabold text-center uppercase tracking-wide rounded-md"
               >
                 Join Us
-              </Link>
+              </a>
             </div>
           </motion.div>
         )}
