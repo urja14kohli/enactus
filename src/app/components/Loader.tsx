@@ -22,14 +22,22 @@ export default function Loader() {
         }}
       />
 
-      <motion.span
-        className="text-2xl font-semibold tracking-tight text-neutral-800 lowercase"
+      <motion.p
+        className="text-sm text-neutral-500"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
-        enactus
-      </motion.span>
+        Loading impact{' '}
+        <a
+          href="https://www.instagram.com/igdtuw.en/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-neutral-700 transition-colors hover:text-enactus-yellow"
+        >
+          @igdtuw.en
+        </a>
+      </motion.p>
 
       <div className="relative h-[3px] w-40 overflow-hidden rounded-full bg-neutral-200">
         <motion.div

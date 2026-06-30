@@ -3,6 +3,7 @@ import { Target, Eye, ShieldCheck, Lightbulb, Flame, Users } from 'lucide-react'
 import PageHero from '../components/PageHero';
 import DisplayHeading from '../components/DisplayHeading';
 import Collage from '../components/Collage';
+import WorldCupHighlight from '../components/WorldCupHighlight';
 import { photoPool } from '../data/content';
 
 const values = [
@@ -15,6 +16,7 @@ const values = [
 const journey = [
   { year: '2015', text: 'Enactus IGDTUW is founded at India\u2019s first all-women technical university.' },
   { year: '2016', text: 'First all-girls team ever to win the Enactus India Nationals Rookie League, in Mumbai.' },
+  { year: '2025', text: 'Best Paper Award at the EGRN Enactus World Cup in Bangkok, Sep 2025.' },
   { year: '2015 to 23', text: 'Eight years of projects across menstrual health, clean water, animal welfare and waste, touching thousands of lives.' },
   { year: '2024 to 26', text: 'A new wave of ventures, Khajoor, Dhaan, Sahaay and Vidyuta, takes our impact further.' },
 ];
@@ -38,29 +40,47 @@ export default function About() {
       />
 
       {/* Mission & Vision */}
-      <section className="py-20 md:py-28">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 md:grid-cols-2">
-          {[
-            { icon: <Target className="h-7 w-7" />, title: 'Our Mission', text: 'To inspire the next generation of leaders to use innovation and entrepreneurship to take on real social, environmental and economic problems, and improve life for the communities we work with.' },
-            { icon: <Eye className="h-7 w-7" />, title: 'Our Vision', text: 'A world where young leaders everywhere use innovation and business skills so that all people can thrive in a sustainable world.' },
-          ].map((c, i) => (
-            <motion.div
-              key={c.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="glass rounded-3xl p-9"
-            >
-              <div className="mb-5 flex h-13 w-13 items-center justify-center rounded-2xl bg-enactus-yellow/20 p-3 text-gold-accent">
-                {c.icon}
-              </div>
-              <h2 className="mb-4 font-heading text-2xl font-extrabold text-navy-accent">{c.title}</h2>
-              <p className="leading-relaxed text-foreground-secondary">{c.text}</p>
-            </motion.div>
-          ))}
+      <section className="relative overflow-hidden py-20 md:py-28">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -left-20 top-1/4 h-72 w-72 rounded-full bg-enactus-yellow/10 blur-3xl" />
+          <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-navy-accent/10 blur-3xl" />
+          <div className="absolute left-1/2 top-8 h-px w-[min(90%,42rem)] -translate-x-1/2 bg-gradient-to-r from-transparent via-enactus-yellow/35 to-transparent" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-6">
+          <div className="mb-12 max-w-2xl">
+            <div className="eyebrow mb-3">Why we exist</div>
+            <DisplayHeading lead="Mission &" accent="vision" size="md" />
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+            {[
+              { icon: <Target className="h-7 w-7" />, title: 'Our Mission', text: 'To inspire the next generation of leaders to use innovation and entrepreneurship to take on real social, environmental and economic problems, and improve life for the communities we work with.' },
+              { icon: <Eye className="h-7 w-7" />, title: 'Our Vision', text: 'A world where young leaders everywhere use innovation and business skills so that all people can thrive in a sustainable world.' },
+            ].map((c, i) => (
+              <motion.div
+                key={c.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="glass-panel group relative overflow-hidden rounded-[2rem] p-9 transition-all duration-500 md:p-10"
+              >
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+                <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-enactus-yellow/15 blur-2xl transition-opacity duration-500 group-hover:opacity-100 opacity-60" />
+
+                <div className="relative mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/50 bg-white/30 text-gold-accent shadow-sm backdrop-blur-sm">
+                  {c.icon}
+                </div>
+                <h2 className="relative mb-4 font-heading text-2xl font-extrabold text-navy-accent md:text-[1.65rem]">{c.title}</h2>
+                <p className="relative text-base leading-relaxed text-foreground-secondary">{c.text}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
+
+      <WorldCupHighlight />
 
       {/* Our Story */}
       <section className="pb-20 md:pb-28">

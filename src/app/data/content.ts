@@ -464,6 +464,52 @@ export const departments = [
   'Involve',
 ];
 
+export const worldCupHighlight = {
+  when: 'Sep 2025',
+  title: 'Best Paper Award',
+  event: 'EGRN Enactus World Cup',
+  location: 'Bangkok, Thailand',
+  images: [
+    {
+      src: '/images/about/egrn-conference.png',
+      alt: 'Enactus IGDTUW at the Enactus Global Research Network Conference 2025 venue',
+      caption: 'At Srinakharinwirot University, Bangkok',
+    },
+    {
+      src: '/images/about/egrn-presidents.png',
+      alt: 'Urja Kohli and Vanshika Kaushika at Enactus World Cup 2025 in Bangkok',
+      caption: 'Urja Kohli and Vanshika Kaushika, Presidents 2024-25\nRepresented the team on the global stage',
+    },
+    {
+      src: '/images/about/egrn-world-cup.png',
+      alt: 'Enactus World Cup 2025 branding at the Bangkok venue',
+      caption: 'Enactus World Cup 2025, Bangkok',
+    },
+    {
+      src: '/images/about/egrn-schedule.png',
+      alt: 'Oral presentation schedule at EGRN 2025',
+      caption: 'Presenting our work on the global stage',
+    },
+    {
+      src: '/images/about/egrn-timeline.png',
+      alt: 'Enactus 50 years exhibition at World Cup 2025',
+      caption: 'Celebrating 50 years of entrepreneurial action',
+    },
+  ],
+  stats: [
+    { value: '170+', label: 'Teams worldwide' },
+    { value: '21+', label: 'Countries' },
+    { value: 'Sep 2025', label: 'Bangkok' },
+  ],
+  hosts: [
+    'Enactus Australia',
+    'Enactus Canada',
+    'Rakkaew Foundation',
+    'Resolution Project',
+    'Srinakharinwirot University',
+  ],
+};
+
 // Photo pool for collages and the gallery
 export const photoPool = Array.from({ length: 34 }, (_, i) => `/images/photos/photo-${String(i + 1).padStart(2, '0')}.jpg`);
 
